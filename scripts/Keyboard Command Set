@@ -1,0 +1,70 @@
+LU	L	  \UF702  	 LEFTARROW          	 	 moveLeft
+LU	L	 $\UF702 	 SHIFT + LEFTARROW  	 	 moveLeftAndModifySelection
+LU	L	 @\UF702  	 CMD + LEFTARROW          	 moveToBeginningOfLine
+LU	L	 ~\UF702  	 ALT + LEFTARROW          	 moveWordLeft
+LU	L	$@\UF702 	 SHIFT + CMD + LEFTARROW  	 moveToBeginningOfLineAndModifySelection
+LU	L	$~\UF702 	 SHIFT + ALT + LEFTARROW  	 moveWordLeftAndModifySelection
+
+LU	U	  \UF700   	 UPARROW                  	 moveUp
+LU	U	 $\UF700  	 SHIFT + UPARROW          	 moveUpAndModifySelection
+LU	U	 ~\UF700  	 ALT + UPARROW            	 moveToBeginningOfParagraph
+LU	U	$~\UF700 	 SHIFT + ALT + UPARROW    	 moveToBeginningOfParagraphAndModifySelection
+
+LU	U	  \UF72C   	 PGUP                     	 pageUp
+LU	U	 $\UF72C  	 SHIFT + PGUP             	 pageUpAndModifySelection
+
+LU	U	  \UF729   	 HOME                     	 moveToBeginningOfDocument
+LU	U	 $\UF729  	 SHIFT + HOME             	 moveToBeginningOfDocumentAndModifySelection
+
+RD	R	  \UF703   	 RIGHTARROW               	 moveRight
+RD	R	 $\UF703  	 SHIFT + RIGHTARROW       	 moveRightAndModifySelection
+RD	R	 @\UF703  	 CMD + RIGHTARROW         	 moveToEndOfLine
+RD	R	 ~\UF703  	 ALT + RIGHTARROW         	 moveWordRight
+RD	R	$@\UF703 	 SHIFT + CMD + RIGHTARROW 	 moveToEndOfLineAndModifySelection
+RD	R	$~\UF703 	 SHIFT + ALT + RIGHTARROW 	 moveWordRightAndModifySelection
+
+
+RD	D	  \UF701   	 DOWNARROW                	 moveDown
+RD	D	 $\UF701  	 SHIFT + DOWNARROW        	 moveDownAndModifySelection
+RD	D	 ~\UF701  	 ALT + DOWNARROW          	 moveToEndOfParagraph
+RD	D	$~\UF701 	 SHIFT + ALT + DOWNARROW  	 moveToEndOfParagraphAndModifySelection
+
+RD	D	  \UF72D   	 PGDOWN                   	 pageDown
+RD	D	 $\UF72D  	 SHIFT + PGDOWN           	 pageDownAndModifySelection
+
+RD	D	  \UF72B   	 END                      	 moveToEndOfDocument
+RD	D	 $\UF72B  	 SHIFT + END              	 moveToEndOfDocumentAndModifySelection
+
+ALL COMMANDS - STARTWARDS
+LU	L	moveLeft
+LU	L	moveLeftAndModifySelection
+LU	L	moveWordLeft
+LU	L	moveWordLeftAndModifySelection
+LU	L	moveToBeginningOfLine
+LU	L	moveToBeginningOfLineAndModifySelection
+LU	U	moveUp
+LU	U	moveUpAndModifySelection
+LU	U	pageUp
+LU	U	pageUpAndModifySelection
+LU	U	moveToBeginningOfParagraph
+LU	U	moveToBeginningOfParagraphAndModifySelection
+LU	U	moveToBeginningOfDocument
+LU	U	moveToBeginningOfDocumentAndModifySelection
+
+
+
+ALL COMMANDS - ENDWARDS
+RD	R	moveRight
+RD	R	moveRightAndModifySelection
+RD	R	moveWordRight
+RD	R	moveWordRightAndModifySelection
+RD	R	moveToEndOfLine
+RD	R	moveToEndOfLineAndModifySelection
+RD	D	moveDown
+RD	D	moveDownAndModifySelection
+RD	D	pageDown
+RD	D	pageDownAndModifySelection
+RD	D	moveToEndOfParagraph
+RD	D	moveToEndOfParagraphAndModifySelection
+RD	D	moveToEndOfDocument
+RD	D	moveToEndOfDocumentAndModifySelection
