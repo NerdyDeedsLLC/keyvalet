@@ -128,7 +128,7 @@ const appendRule = (keyID, keyLabel, keyName, dirSet, record) => {
     let rulesObj = document.getElementById("rules-for-" + keyID);
     let behaviorOpts = ('LU'.indexOf(dirSet) === -1) ? allRDMethods : allLUMethods;
     behaviorOpts = behaviorOpts.replace(`>${osxCmd}</`,` selected>${osxCmd}</`);
-    let HTMLOutput = `<table class="rule-scope">
+    let HTMLOutput = `<table class="rule-scope" data-key="${kId}">
                         <thead>
                             <tr>
                                 <th colspan="6">
@@ -153,10 +153,11 @@ const appendRule = (keyID, keyLabel, keyName, dirSet, record) => {
                         
                       </table>`;
 
-    if(null == rulesObj)
-      return HTMLOutput
-    else
+    if(null == rulesObj) {
+      return HTMLOutput;
+    } else {
       rulesObj.innerHTML = HTMLOutput + rulesObj.innerHTML;
+    }
 };
 
 
@@ -166,14 +167,30 @@ const generateInteractiveRuleSet = (keyID, keyLabel, keyName, optionSet, dirSet,
                         <input type="checkbox" id="enable-keyset-${keyID}" name="enable-keyset-${keyID}" class="enable-rule" value="1" checked><label for="enable-keyset-${keyID}"><span data-keycap="${keyLabel}" class="header"></span> ${keyName}</label></td>
                         <span class="rule-count" id="${keyID}-activeCount">${optionCount}</span>
                         <div id="rules-for-${keyID}" class="interactive-form">`;
-                        optionSet.forEach(o=> {HTMLOutput += appendRule(keyID, keyLabel, keyName, dirSet, o)});
+                        optionSet.forEach(o=> { HTMLOutput += appendRule(keyID, keyLabel, keyName, dirSet, o); });
     return HTMLOutput + `<button id="append-button-${keyID}" class='append' alt="Add Another">⊕</button>
                         </div>
-                      </section>`;;
+                      </section>`;
+};
+
+const establishDefaults = () => {
+    let extantRuleSets = [...document.querySelectorAll('.rule-scope')];
+    extantRuleSets.forEach(rs => {
+        let rsModKeyId = rs.dataset.key;
+        let rsModKeys  = rs.querySelectorAll('[checked]');
+        let rsModRule  = rs.querySelector('select').value;
+        if(null != rsModKeys){
+            rsModKeys=([...rsModKeys].map(rsmk => rsmk.id.slice(-3)).join('+'));
+            rsModKeys=(rsModKeys === '') ? rsModKeyId : rsModKeys + '+' + rsModKeyId;
+            rs.dataset.combo = rsModKeys;
+        }
+        if(null != rsModRule){ rs.dataset.behavior = rsModRule; }
+        console.log(rsModKeys, rsModRule);
+    });
 };
 
 const createKeySet = () => {
-  const toTitleCase = str => str.replace(/\b\w+/g,(s)=> s.charAt(0).toUpperCase() + s.substr(1).toLowerCase());
+  // const toTitleCase = str => str.replace(/\b\w+/g,(s)=> s.charAt(0).toUpperCase() + s.substr(1).toLowerCase());
   const mainPanel = document.querySelector("body>main>article");
   
   systemDefaults.keyRefs.forEach(ref => {
@@ -183,8 +200,8 @@ const createKeySet = () => {
       mainPanel.innerHTML += generateInteractiveRuleSet(key[1].keyCode, key[1].keySymbol, key[0].replace("_", " "), key[1].data, dirSet);
     });
   });
+
+  establishDefaults();
 };
-
-
 
 createKeySet();
