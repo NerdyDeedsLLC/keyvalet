@@ -83,6 +83,11 @@ main > aside li > textarea {
   width: 90%;
 }
 
+main > aside button {
+  font-size: 1.25rem;
+  color: rgba(0, 0, 0, 0.75);
+}
+
 section {
   margin: 0.5rem 0.5rem 1rem;
   font-weight: bold;
@@ -216,7 +221,6 @@ section .rule-count::after {
 
 table {
   width: 100%;
-  border-top: 0.2rem dotted #CCC;
   border-bottom: 0.2rem dotted #CCC;
   margin-top: 1rem;
   font-size: 1rem;
@@ -533,17 +537,10 @@ label span.header::after {
   opacity: 0.5;
 }
 
-html.nolabels {
-  font-size: 0.5rem;
-}
-
-html.nolabels main {
-  -webkit-transform: scale(0.75);
-          transform: scale(0.75);
-}
-
 html.nolabels td label {
   font-size: 0;
+  -webkit-transition: all .2s ease-out;
+  transition: all .2s ease-out;
 }
 
 html.nolabels td br {

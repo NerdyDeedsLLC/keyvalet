@@ -65,7 +65,13 @@ main {
 			font-size:0.75rem;
 			width:90%;
 		}
+
+		button {
+			font-size:1.25rem;
+			color:rgba(#000, 0.75);
+		}
 	}
+
 }
 
 $keydim: 2rem;
@@ -217,7 +223,6 @@ section {
 
 table {
 	width:100%;
-	border-top:0.2rem dotted #CCC;
 	border-bottom:0.2rem dotted #CCC;
 	margin-top:1rem;
 	font-size:1rem;
@@ -548,17 +553,17 @@ label {
 }
 
 html.nolabels {
-		font-size:0.5rem;
+		// font-size:0.85rem;
 
-		main {
-			transform: scale(.75);
-		}
+		// main {
+		// 	transform: scale(.75);
+		// }
 
-	td {
-	 label {
+	td label {
 			font-size:0;
+			transition:all .2s ease-out;
 		}
-	}
+	
 
 	td br {
 		display:none;

@@ -128,7 +128,7 @@ const appendRule = (keyID, keyLabel, keyName, dirSet, record) => {
     let rulesObj = document.getElementById("rules-for-" + keyID);
     let behaviorOpts = ('LU'.indexOf(dirSet) === -1) ? allRDMethods : allLUMethods;
     behaviorOpts = behaviorOpts.replace(`>${osxCmd}</`,` selected>${osxCmd}</`);
-    let HTMLOutput = `<table class="rule-scope" data-key="${kId}">
+    let HTMLOutput = `<table class="rule-scope" data-key="${kId}" cellpadding="0" cellspacing="0">
                         <thead>
                             <tr>
                                 <th colspan="6">
@@ -187,6 +187,38 @@ const establishDefaults = () => {
         if(null != rsModRule){ rs.dataset.behavior = rsModRule; }
         console.log(rsModKeys, rsModRule);
     });
+};
+
+const collectSpecifiedRules = () => {
+    let extantRuleSets = [...document.querySelectorAll('.rule-scope')];
+    extantRuleSets.forEach(rs => {
+        let rsModKeyId = rs.dataset.key;
+        let rsModKeys  = rs.querySelectorAll('[checked]');
+        let rsModRule  = rs.querySelector('select').value;
+        if(null != rsModKeys){
+            rsModKeys=([...rsModKeys].map(rsmk => rsmk.id.slice(-3)).join('+'));
+            rsModKeys=(rsModKeys === '') ? rsModKeyId : rsModKeys + '+' + rsModKeyId;
+            rs.dataset.combo = rsModKeys;
+        }
+        if(null != rsModRule){ rs.dataset.behavior = rsModRule; }
+        console.log(rsModKeys, rsModRule);
+    });
+};
+
+const showHideLabels = (targetBtn=event.target, showMode=~targetBtn.innerText.indexOf('Show')) => {
+    let htmlTag = document.getElementsByTagName('html')[0];
+    let cleaned = htmlTag.className.replace(/\s?nolabels\s?/gi, '');
+    console.log('cleaned', cleaned)
+    htmlTag.className = cleaned;
+    console.log('cleaned', cleaned)
+
+    if(showMode){
+    targetBtn.innerText=targetBtn.innerText.replace(/show/gi, 'Hide');
+        return;
+    }
+        targetBtn.innerText=targetBtn.innerText.replace(/hide/gi, 'Show');
+    htmlTag.className += ' nolabels';
+    return;
 };
 
 const createKeySet = () => {
