@@ -172,7 +172,7 @@ const generateSingleBinding = (keyID, keyLabel, keyName, dirSet, record, instanc
                             <tr>
                                 <th colspan="6">
                                     ${humanFriendlyKCode}
-                                    <span id="codeblock-${instanceCt}">"$~\\UF702" = moveWordLeftAndModifySelection:;</span>
+                                    <span class="codeblock" id="codeblock-${instanceCt}">"$~\\UF702" = moveWordLeftAndModifySelection:;</span>
                                 </th>
                             </tr>
                         </thead>
@@ -268,6 +268,8 @@ const processRules = (updateSweep=true) => {
         }
         if(null != rsModRule){ rs.dataset[datasetNameMod + 'behavior'] = rsModRule; }
     });
+    updateAllUserVisibleText();
+
     return true;
 };
 
@@ -339,6 +341,16 @@ const removeBinding = (sourceObj, diagID, instanceCt, keyID) => {
     cancelButton.onclick = () => { resolve('RemoveDialog', false, {sourceObj, diagID, instanceCt, keyID}); };
 };
 
+/**
+ * @name                        resolveDialog
+ * @type                        {function}
+ *
+ * @description                 Processes the true/false callback handler state for a given dialog box
+ *                              
+ * @todo                        Error handling.
+ *
+ * @return {bool}               Returns true if successful. TODO: Return false+object in the case of a trapped error
+ */
 const resolveDialog = (e, detail=e.detail, dialog=detail.dialogID, value=detail.dialogValue, data=detail.data) => {
     h.className = h.className.replace(/ dialog-visible/gi, "");
     switch(dialog){
@@ -346,10 +358,40 @@ const resolveDialog = (e, detail=e.detail, dialog=detail.dialogID, value=detail.
             value = value || false;
             let bindingToRemove=d.querySelector(`[data-key='${data.keyID}'][data-instance='${data.instanceCt}']`);
             bindingToRemove.className += ' programmatically-destroyed';
-            if(value && bindingToRemove){ setTimeout(function(){ bindingToRemove.remove(); }, 750); }
+            if(value && bindingToRemove){ setTimeout(function(){ bindingToRemove.remove(); processRules(); }, 750); }
         break;
     }
 };
+
+const combo2Machine = text => text.replace('SHF+', '$').replace('CMD+', '@').replace('ALT+', '~').replace('CTL+', '^').replace('UF', '\\UF');
+
+const updateActiveBindingCounts = () => {
+    document.querySelectorAll('section').forEach(set => set.querySelector('.rule-count').innerHTML = set.querySelectorAll('table').length);
+}
+
+const updateInlineCodeBlocks = () => {
+    const dictOP = document.getElementById('output-code');
+    dictOP.innerHTML = '';
+    document.querySelectorAll('.rule-scope').forEach(rso => {
+        let rsoCodeOutput = '';
+        if(null == rso.dataset.editedcombo || (rso.dataset.combo === rso.dataset.editedcombo && rso.dataset.behavior === rso.dataset.editedbehavior)) {
+            rsoCodeOutput = `"${combo2Machine(rso.dataset.combo)}" = ${rso.querySelector('select').value}:;`;
+        } else {
+            rsoCodeOutput = `<i>"${combo2Machine(rso.dataset.editedcombo)}" = ${rso.querySelector('select').value}:;</i>`;
+        }
+        rso.querySelector('.codeblock').innerHTML = rsoCodeOutput;
+        dictOP.innerHTML += rsoCodeOutput + "<br>";
+    });
+}
+
+const updateOnScreenDictCode = () => {
+
+}
+
+const updateAllUserVisibleText = () => {
+    updateInlineCodeBlocks();
+    updateActiveBindingCounts();
+}
 
 /**
  * @name                        init
@@ -364,17 +406,17 @@ const resolveDialog = (e, detail=e.detail, dialog=detail.dialogID, value=detail.
  * @return {bool}               Returns true if successful. TODO: Return false+object in the case of a trapped error
  */
 const init = () => {
-  const mainPanel = document.querySelector("body>main>article");
-  
-  systemDefaults.keyRefs.forEach(ref => {
-    let defaultKeys = Object.entries(ref);
-    let dirSet = (defaultKeys[0][0].charAt(0));
-    defaultKeys.forEach(key => {
-      mainPanel.innerHTML += generateAllBindingsForKey(key[1].keyCode, key[1].keySymbol, key[0].replace("_", " "), key[1].data, dirSet);
-    });
-  });
+    const mainPanel = document.querySelector("body>main>article");
 
-  processRules(false);
+    systemDefaults.keyRefs.forEach(ref => {
+        let defaultKeys = Object.entries(ref);
+        let dirSet = (defaultKeys[0][0].charAt(0));
+        defaultKeys.forEach(key => {
+            mainPanel.innerHTML += generateAllBindingsForKey(key[1].keyCode, key[1].keySymbol, key[0].replace("_", " "), key[1].data, dirSet);
+        });
+    });
+
+    processRules(false);
     w.addEventListener('dialogClose', resolveDialog);
 };
 init();

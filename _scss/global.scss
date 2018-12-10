@@ -13,6 +13,8 @@ $lightgray:#CCC;
 $gray:#888;
 $blue:#1B92FC;
 $black:#000;
+$green:#060;
+$red:#900;
 
 html,
 body {
@@ -76,12 +78,74 @@ main {
             font-size: 1.25rem;
             color: rgba($black, 0.75);
         }
+				li > #output-code,
+        #key {
+        	border-radius:0 0 1rem 1rem;
+          width: 90%;
+          background-color:$white;
+          margin:0 auto;
+          border:1px solid $gray;
+          font-family: monospace;
+          font-weight: normal;
+          font-size: 0.75rem;
 
-        li > textarea {
-            font-size: 0.75rem;
-            width: 90%;
-            height: calc(100vh - 20rem);
+          color:$gray;
+          text-align:left;
+        	background-color:rgba($lightgray, 0.5);
+          padding:1rem;
+
+          & > strong {
+    				font-family: Helvetica, 'Niramit', sans-serif;
+          	color:rgba($black, 0.5);
+          }
+
+          // These bindings are tag-driven for programmatic convenience. Yes, I'm aware this means they're not 
+          // going to be symantic and screen readers will likely crash and burn, but before getting bent - and
+          // I feel this is a fair and germaine point here - review the REST of this code & then ask yourself,
+          // "THIS is the stuff I'm gonna whine about? Wouldn't my time be better spent finding a girlfriend?"
+          // Course, YOU'RE not the anal-retentive nerd ensuring a block comment aligns to the same character.
+          
+					& > i { // <i>ntroduced behavior (an entirely new keybinding specified by the user)
+						font-style: normal;
+						color:$green;
+					}
+
+					& > b { // <b>orrowed Behavior (an existing keybinding the user has appropriated to a new behavior)
+						font-weight: normal;
+						color:$blue;
+					}
+
+					& > s { // <s>uppressed Behavior (an exisiting keybinding - default or user-created - that has been removed)
+						color:$red;
+					}
+				}
+
+        li > label {
+        	background-color:$lightgray;
+        	display:block;
+          width: 90%;
+        	border-radius:1rem 1rem 0 0;
+          border:1px solid $gray;
+          border-bottom:none;
+          margin:0 auto;
+          line-height: 2;
+          font-weight:900;
+        	color:rgba($black, 0.5);
         }
+
+        li > #output-code {
+            height: calc(100vh - 25rem);
+            overflow:auto;
+            margin-top:0.5rem auto 0;
+            border-bottom:0 none;
+	          border-radius:0;
+	          background-color: $white;
+
+				}
+
+            
+
+        
     }
 }
 
@@ -410,7 +474,7 @@ button {
         &:hover,
         &:focus,
         &:active {
-            color: #060;
+            color: $green;
         }
     }
 
@@ -473,7 +537,7 @@ button {
         display: inline-block;
         margin: 0;
         text-align: center;
-        color:white;
+        color:#FFF;
         padding:3px;
         transition: all .1s ease-in;
         max-width:none;
@@ -482,11 +546,11 @@ button {
     &.save {
     		border:1px solid #030;
 				box-shadow: inset 0 6px 12px rgba(#0F0, 1);
-				background: radial-gradient(circle, rgba(#0F0, 1) 0%, rgba(#060, 1) 50%);
+				background: radial-gradient(circle, rgba(#0F0, 1) 0%, rgba($green, 1) 50%);
 				text-shadow:  
-										 -1px  0   0 #060,
-										  0   -1px 0 #060,
-									   -1px -1px 0 #060,
+										 -1px  0   0 $green,
+										  0   -1px 0 $green,
+									   -1px -1px 0 $green,
 									    0    1px 0 #0F0,
 									    1px  0   0 #0F0,
 									    1px  1px 0 #0F0;
@@ -764,7 +828,7 @@ html {
 				#license {
 				    z-index: 10;
 				    background-color: rgba($white, 0.85);
-				    border: .25rem double $black;
+				    border: 0.25rem double $black;
 				    position: absolute;
 				    border-radius: 1.25rem;
 				    font-size: 1.5rem;
@@ -857,7 +921,6 @@ html {
     }
 }
 
-
 dialog {
 		transition:all .2s ease-out;
     z-index:100000; 
@@ -877,9 +940,10 @@ dialog {
 		.dialog-btns {
 			padding: 1rem;
 			text-align: right;
-	    [type='reset'], [type='submit'] {
+	    [type='reset'],
+	    [type='submit'] {
 	    	border-radius: 0.5rem;
-	    	margin: 0 .25rem;
+	    	margin: 0 0.25rem;
 	    	color:black;
 	    	font-size:0.75rem;
 				font-weight:bold;
@@ -908,4 +972,8 @@ dialog {
 .programmatically-destroyed {
 		transition: all 0.65s ease-in-out;
 		opacity:0;
+}
+
+[disabled] {
+	opacity:0.35;
 }

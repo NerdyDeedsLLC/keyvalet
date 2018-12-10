@@ -84,10 +84,65 @@ main > aside li > button {
   color: rgba(0, 0, 0, 0.75);
 }
 
-main > aside li > textarea {
-  font-size: 0.75rem;
+main > aside li > #output-code,
+main > aside #key {
+  border-radius: 0 0 1rem 1rem;
   width: 90%;
-  height: calc(100vh - 20rem);
+  background-color: #FFF;
+  margin: 0 auto;
+  border: 1px solid #888;
+  font-family: monospace;
+  font-weight: normal;
+  font-size: 0.75rem;
+  color: #888;
+  text-align: left;
+  background-color: rgba(204, 204, 204, 0.5);
+  padding: 1rem;
+}
+
+main > aside li > #output-code > strong,
+main > aside #key > strong {
+  font-family: Helvetica, 'Niramit', sans-serif;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+main > aside li > #output-code > i,
+main > aside #key > i {
+  font-style: normal;
+  color: #060;
+}
+
+main > aside li > #output-code > b,
+main > aside #key > b {
+  font-weight: normal;
+  color: #1B92FC;
+}
+
+main > aside li > #output-code > s,
+main > aside #key > s {
+  color: #900;
+}
+
+main > aside li > label {
+  background-color: #CCC;
+  display: block;
+  width: 90%;
+  border-radius: 1rem 1rem 0 0;
+  border: 1px solid #888;
+  border-bottom: none;
+  margin: 0 auto;
+  line-height: 2;
+  font-weight: 900;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+main > aside li > #output-code {
+  height: calc(100vh - 25rem);
+  overflow: auto;
+  margin-top: 0.5rem auto 0;
+  border-bottom: 0 none;
+  border-radius: 0;
+  background-color: #FFF;
 }
 
 section {
@@ -445,7 +500,7 @@ button.save, button.undo {
   display: inline-block;
   margin: 0;
   text-align: center;
-  color: white;
+  color: #FFF;
   padding: 3px;
   -webkit-transition: all .1s ease-in;
   transition: all .1s ease-in;
@@ -458,7 +513,7 @@ button.save, button.undo {
   -webkit-box-shadow: inset 0 6px 12px lime;
           box-shadow: inset 0 6px 12px lime;
   background: radial-gradient(circle, lime 0%, #006600 50%);
-  text-shadow: -1px  0   0 #060, 0   -1px 0 #060, -1px -1px 0 #060, 0    1px 0 #0F0, 1px  0   0 #0F0, 1px  1px 0 #0F0;
+  text-shadow: -1px 0 0 #060, 0 -1px 0 #060, -1px -1px 0 #060, 0 1px 0 #0F0, 1px 0 0 #0F0, 1px 1px 0 #0F0;
 }
 
 .altered button.save:hover, .altered button.save:focus, .altered button.save:active {
@@ -825,9 +880,10 @@ dialog .dialog-btns {
   text-align: right;
 }
 
-dialog .dialog-btns [type='reset'], dialog .dialog-btns [type='submit'] {
+dialog .dialog-btns [type='reset'],
+dialog .dialog-btns [type='submit'] {
   border-radius: 0.5rem;
-  margin: 0 .25rem;
+  margin: 0 0.25rem;
   color: black;
   font-size: 0.75rem;
   font-weight: bold;
@@ -855,4 +911,8 @@ dialog::before {
   -webkit-transition: all 0.65s ease-in-out;
   transition: all 0.65s ease-in-out;
   opacity: 0;
+}
+
+[disabled] {
+  opacity: 0.35;
 }
