@@ -21,6 +21,7 @@
     "async": "^2.6.1",
     "browser-sync": "^2.26.0",
     "bulma": "^0.7.2",
+    "dialog-polyfill": "^0.4.10",
     "gsap": "^2.0.2",
     "gulp": "^4.0.0",
     "gulp-autoprefixer": "^6.0.0",

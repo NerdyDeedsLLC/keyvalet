@@ -18,7 +18,7 @@ html {
   font-size: calc(10px + 6 * ((100vw - 768px) / 512));
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  font-family: helvetica;
+  font-family: Helvetica, 'Niramit', sans-serif;
 }
 
 @media screen and (min-width: 1280px){
@@ -31,6 +31,11 @@ html {
   html{
     font-size: 10px;
   }
+}
+
+body {
+  background: -webkit-gradient(linear, left top, left bottom, from(#d2d2d2), color-stop(25%, white));
+  background: linear-gradient(180deg, #d2d2d2 0%, white 25%);
 }
 
 main {
@@ -51,7 +56,7 @@ main > aside {
   height: calc(100vh - 1rem);
   top: 0;
   position: fixed;
-  border: 1px solid #AAA;
+  border: 1px solid #CCC;
   margin: 0.5rem 0;
   background-color: #EEE;
 }
@@ -75,24 +80,22 @@ main > aside li > button {
   text-decoration: none;
   margin: 0.5rem;
   border-radius: 4px;
-  color: #000;
+  font-size: 1.25rem;
+  color: rgba(0, 0, 0, 0.75);
 }
 
 main > aside li > textarea {
   font-size: 0.75rem;
   width: 90%;
-}
-
-main > aside button {
-  font-size: 1.25rem;
-  color: rgba(0, 0, 0, 0.75);
+  height: calc(100vh - 20rem);
 }
 
 section {
   margin: 0.5rem 0.5rem 1rem;
   font-weight: bold;
-  border: 0.2rem dotted #999;
+  border: 0.2rem dotted #888;
   padding-top: 1rem;
+  background-color: #FFF;
 }
 
 section > label {
@@ -114,7 +117,7 @@ section .rule-count {
   font-weight: 100;
   font-size: 1.5rem;
   display: inline-block;
-  background-color: #AAA;
+  background-color: #CCC;
   color: #FFF;
   width: 1.75rem;
   height: 1.75rem;
@@ -132,20 +135,20 @@ section .rule-count::before {
   position: absolute;
   font-weight: bold;
   text-align: left;
-  font-size: .85rem;
+  font-size: 0.85rem;
   line-height: 1;
-  color: #999;
+  color: #888;
   float: right;
 }
 
 section .rule-count::after {
   content: '0';
   top: 0;
-  left: 0rem;
+  left: 0;
   position: absolute;
   font-weight: 100;
   font-size: 1.5rem;
-  background-color: #AAA;
+  background-color: #CCC;
   color: #FFF;
   width: 1.75rem;
   height: 1.75rem;
@@ -153,8 +156,8 @@ section .rule-count::after {
   border-radius: 50%;
   text-align: center;
   opacity: 1;
-  -webkit-transition: all .5s ease-in;
-  transition: all .5s ease-in;
+  -webkit-transition: all 0.5s ease-in;
+  transition: all 0.5s ease-in;
 }
 
 #logo {
@@ -185,7 +188,7 @@ section .rule-count::after {
 }
 
 #logo > div > b {
-  background: url(/assets/images/keycap_wide.png) no-repeat;
+  background: url("/assets/images/keycap_wide.png") no-repeat;
   background-size: contain;
   display: inline-block;
   width: 16rem;
@@ -216,13 +219,18 @@ section .rule-count::after {
   font-size: 2.35rem;
   text-align: right;
   letter-spacing: -0.05rem;
-  text-shadow: 0 3px 0 #FFF, 3px 0 0 #FFF, 3px 3px 0 #FFF, 0 -3px 0 #FFF, -3px 0 0 #FFF, -3px -3px 0 #FFF, 0 5px 2px #747474, 5px 0 2px #747474, 5px 5px 2px #747474, 0 -5px 2px #747474, -5px 0 2px #747474, -5px -5px 2px #747474, 2px 12px 12px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 3px 0 #FFF, 3px 0 0 #FFF, 3px 3px 0 #FFF, 0 -3px 0 #FFF, -3px 0 0 #FFF, -3px -3px 0 #FFF, 0 5px 2px #888, 5px 0 2px #888, 5px 5px 2px #888, 0 -5px 2px #888, -5px 0 2px #888, -5px -5px 2px #888, 2px 12px 12px rgba(0, 0, 0, 0.5);
+}
+
+.interactive-form {
+  border-top: 0.2rem dotted #CCC;
+  padding: 0;
+  margin-top: 0.5rem;
 }
 
 table {
   width: 100%;
   border-bottom: 0.2rem dotted #CCC;
-  margin-top: 1rem;
   font-size: 1rem;
 }
 
@@ -236,32 +244,43 @@ table thead {
 
 table th {
   padding: 0.5rem 0;
-  border-bottom: 0.2rem dotted #EEE;
 }
 
 table th b {
   color: #888;
   background-color: #FFF;
+  display: inline-block;
 }
 
 table th b::after {
   border: 1px solid #000;
   display: inline-block;
-  padding: 1px 3px 0;
+  padding: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  line-height: 1.4;
   border-radius: 4px;
   content: attr(data-btn-text);
   color: #000;
   margin-left: 0.75rem;
+  text-align: center;
 }
 
 table th b + b::before {
   display: inline-block;
-  margin: 0 1px;
-  content: '+';
+  margin: 0 1px 0 2px;
+  content: ' + ';
 }
 
 table th b + b::after {
   margin: 0;
+}
+
+table th b[data-btn-text='↓']::after, table th b[data-btn-text='↑']::after {
+  width: 1.25rem;
+  height: 1.25rem;
+  padding: 0;
+  line-height: 1rem;
 }
 
 table th b[data-btn-text='⇧'], table th b[data-btn-text='⌘'], table th b[data-btn-text='⌥'], table th b[data-btn-text='⌃'], table th b[data-btn-text='SHIFT'], table th b[data-btn-text='CMD'], table th b[data-btn-text='OPT'], table th b[data-btn-text='CTRL'] {
@@ -270,6 +289,8 @@ table th b[data-btn-text='⇧'], table th b[data-btn-text='⌘'], table th b[dat
 }
 
 table th b[data-btn-text='⇧']::after, table th b[data-btn-text='⌘']::after, table th b[data-btn-text='⌥']::after, table th b[data-btn-text='⌃']::after, table th b[data-btn-text='SHIFT']::after, table th b[data-btn-text='CMD']::after, table th b[data-btn-text='OPT']::after, table th b[data-btn-text='CTRL']::after {
+  width: 1rem;
+  height: 1rem;
   border-color: #666;
   color: #333;
   background-color: #EEE;
@@ -280,7 +301,7 @@ table th span {
   font-weight: normal;
   font-size: 0.75rem;
   float: right;
-  margin-right: .25rem;
+  margin-right: 0.25rem;
   border: 1px solid #CCC;
   background-color: #EEE;
   padding: 0.15rem;
@@ -298,7 +319,7 @@ table:hover {
 }
 
 table tr + tr {
-  border-top: 0.2rem dotted #AAA;
+  border-top: 0.2rem dotted #CCC;
 }
 
 table td {
@@ -310,6 +331,12 @@ table td {
 
 table td:nth-child(5) {
   width: 100%;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+table td:nth-child(5) select {
+  width: calc(100% - 10rem);
+  font-size: 1rem;
 }
 
 table td + td {
@@ -317,7 +344,7 @@ table td + td {
 }
 
 button {
-  color: #AAA;
+  color: #CCC;
   cursor: pointer;
   -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
@@ -381,6 +408,81 @@ button.remove:hover, button.remove:focus, button.remove:active {
   color: #A00;
 }
 
+button.save, button.undo {
+  -webkit-transition: all .1s ease-in;
+  transition: all .1s ease-in;
+  max-height: 0;
+  max-width: 0;
+  border: 0 none;
+  font-size: 0;
+  line-height: 0;
+  height: 0;
+  overflow: hidden;
+  padding: 0;
+  display: none;
+  margin: 0;
+}
+
+.altered button.remove {
+  max-height: 0;
+  max-width: 0;
+  border: 0 none;
+  font-size: 0;
+  line-height: 0;
+  height: 0;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  display: none;
+}
+
+.altered button.save, .altered button.undo {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  font-weight: 900;
+  font-size: 1rem;
+  display: inline-block;
+  margin: 0;
+  text-align: center;
+  color: white;
+  padding: 3px;
+  -webkit-transition: all .1s ease-in;
+  transition: all .1s ease-in;
+  max-width: none;
+  max-height: none;
+}
+
+.altered button.save {
+  border: 1px solid #030;
+  -webkit-box-shadow: inset 0 6px 12px lime;
+          box-shadow: inset 0 6px 12px lime;
+  background: radial-gradient(circle, lime 0%, #006600 50%);
+  text-shadow: -1px  0   0 #060, 0   -1px 0 #060, -1px -1px 0 #060, 0    1px 0 #0F0, 1px  0   0 #0F0, 1px  1px 0 #0F0;
+}
+
+.altered button.save:hover, .altered button.save:focus, .altered button.save:active {
+  background: #0F0;
+  color: #090;
+  text-shadow: -1px  0   0 #FFF, 0   -1px 0 #FFF, -1px -1px 0 #FFF, 0    1px 0 #FFF, 1px  0   0 #FFF, 1px  1px 0 #FFF;
+}
+
+.altered button.undo {
+  border: 1px solid #00A;
+  padding: 0 3px 6px;
+  margin-top: 3px;
+  -webkit-box-shadow: inset 0 6px 12px #3366ff;
+          box-shadow: inset 0 6px 12px #3366ff;
+  background: radial-gradient(circle, #3366ff 0%, #0000aa 50%);
+  text-shadow: -1px  0   0 #00A, 0   -1px 0 #00A, -1px -1px 0 #00A, 0    1px 0 #36F, 1px  0   0 #36F, 1px  1px 0 #36F;
+}
+
+.altered button.undo:hover, .altered button.undo:focus, .altered button.undo:active {
+  background: #36F;
+  color: #00A;
+  text-shadow: -1px  0   0 #FFF, 0   -1px 0 #FFF, -1px -1px 0 #FFF, 0    1px 0 #FFF, 1px  0   0 #FFF, 1px  1px 0 #FFF;
+}
+
 label {
   line-height: 2rem;
   font-size: 0.83333rem;
@@ -422,7 +524,7 @@ label span.header::after {
   left: 0;
   font-weight: 900;
   color: #888;
-  text-shadow: -0.375rem -0.375rem 0.375rem rgba(170, 170, 170, 0.3), -0.375rem 0.375rem 0.375rem rgba(170, 170, 170, 0.3), 0.375rem -0.375rem 0.375rem rgba(170, 170, 170, 0.3), 0.375rem 0.375rem 0.375rem rgba(170, 170, 170, 0.3);
+  text-shadow: -0.375rem -0.375rem 0.375rem rgba(204, 204, 204, 0.3), -0.375rem 0.375rem 0.375rem rgba(204, 204, 204, 0.3), 0.375rem -0.375rem 0.375rem rgba(204, 204, 204, 0.3), 0.375rem 0.375rem 0.375rem rgba(204, 204, 204, 0.3);
   content: attr(data-keycap) "\a";
   display: inline-block;
   position: absolute;
@@ -466,7 +568,7 @@ label span.header::before {
 
 label span.header::after {
   top: -0.5rem;
-  text-shadow: -0.5625rem -0.5625rem 0.5625rem rgba(170, 170, 170, 0.3), -0.5625rem 0.5625rem 0.5625rem rgba(170, 170, 170, 0.3), 0.5625rem -0.5625rem 0.5625rem rgba(170, 170, 170, 0.3), 0.5625rem 0.5625rem 0.5625rem rgba(170, 170, 170, 0.3);
+  text-shadow: -0.5625rem -0.5625rem 0.5625rem rgba(204, 204, 204, 0.3), -0.5625rem 0.5625rem 0.5625rem rgba(204, 204, 204, 0.3), 0.5625rem -0.5625rem 0.5625rem rgba(204, 204, 204, 0.3), 0.5625rem 0.5625rem 0.5625rem rgba(204, 204, 204, 0.3);
   width: 3rem;
   height: 3rem;
   line-height: 3rem;
@@ -484,8 +586,8 @@ label span.header::after {
   overflow: hidden;
   -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
-  max-height: 1rem;
-  min-height: 1rem;
+  max-height: 0;
+  min-height: 0;
 }
 
 [type='checkbox'] ~ div > button {
@@ -537,10 +639,20 @@ label span.header::after {
   opacity: 0.5;
 }
 
+#license {
+  max-height: 0;
+  overflow: hidden;
+  border: 0 none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  -webkit-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+
 html.nolabels td label {
   font-size: 0;
-  -webkit-transition: all .2s ease-out;
-  transition: all .2s ease-out;
+  -webkit-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
 }
 
 html.nolabels td br {
@@ -549,4 +661,198 @@ html.nolabels td br {
 
 html.nolabels thead {
   display: none;
+}
+
+html.dialog-visible body {
+  height: 100vh;
+  overflow: hidden;
+}
+
+html.dialog-visible body > *:not(dialog) {
+  -webkit-filter: blur(2px);
+          filter: blur(2px);
+}
+
+html.dialog-visible body::after {
+  content: '';
+  background-color: #FFF;
+  opacity: 0.75;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+html.dialog-visible dialog {
+  top: 50%;
+}
+
+html.license-visible body {
+  height: 100vh;
+  overflow: hidden;
+}
+
+html.license-visible body > *:not(#license) {
+  -webkit-filter: blur(2px);
+          filter: blur(2px);
+}
+
+html.license-visible body::after {
+  content: '';
+  background-color: #FFF;
+  opacity: 0.75;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+html.license-visible #license {
+  z-index: 10;
+  background-color: rgba(255, 255, 255, 0.85);
+  border: 0.25rem double #000;
+  position: absolute;
+  border-radius: 1.25rem;
+  font-size: 1.5rem;
+  top: 10%;
+  bottom: 10%;
+  left: 25%;
+  right: 25%;
+  -webkit-box-shadow: 0 1rem 4rem rgba(0, 0, 0, 0.75);
+          box-shadow: 0 1rem 4rem rgba(0, 0, 0, 0.75);
+  max-height: 1000rem;
+  overflow: visible;
+}
+
+html.license-visible #license header {
+  background-color: #1B92FC;
+  height: 3rem;
+  line-height: 3rem;
+  border-radius: 1rem 1rem 0 0;
+  text-align: center;
+  position: relative;
+}
+
+html.license-visible #license header a {
+  position: absolute;
+  top: -2.5rem;
+  right: -2.75rem;
+  color: red;
+  background-color: yellow;
+  text-decoration: none;
+  float: right;
+  margin-right: 1rem;
+  display: block;
+  font-size: 2rem;
+  line-height: 2rem;
+  border-radius: 50%;
+  width: 2.3rem;
+  font-weight: 200;
+  text-align: center;
+  border: 3px solid red;
+  text-shadow: 0 1rem 4rem rgba(0, 0, 0, 0.75);
+}
+
+html.license-visible #license header::before, html.license-visible #license header::after {
+  content: 'Offensive Limerick';
+  text-align: center;
+  text-shadow: 1px 1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000;
+  font-weight: bold;
+  color: #FF0;
+}
+
+html.license-visible #license header::before {
+  content: 'License Type: ';
+  color: #FFF;
+  margin-right: 0.5rem;
+}
+
+html.license-visible #license div {
+  overflow: auto;
+  height: calc(100% - 5rem);
+  font-size: 1.25rem;
+}
+
+html.license-visible #license div spanza {
+  display: block;
+  padding: 0.5rem 4rem;
+}
+
+html.license-visible #license div spanza:nth-child(even) {
+  background-color: #eee;
+}
+
+html.license-visible #license footer {
+  background-color: #1B92FC;
+  height: 2rem;
+  line-height: 2rem;
+  border-radius: 0 0 16px 16px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #FFF;
+}
+
+html.license-visible #license footer a {
+  color: #FF0;
+}
+
+dialog {
+  -webkit-transition: all .2s ease-out;
+  transition: all .2s ease-out;
+  z-index: 100000;
+  position: fixed;
+  top: -50%;
+  -webkit-transform: translate(0, -50%);
+          transform: translate(0, -50%);
+  min-width: 25rem;
+  padding: 0;
+  border-radius: 1rem;
+  border: 2px double #1B92FC;
+  -webkit-box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.5);
+          box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.5);
+}
+
+dialog .dialog-msg {
+  padding: 1rem;
+}
+
+dialog .dialog-btns {
+  padding: 1rem;
+  text-align: right;
+}
+
+dialog .dialog-btns [type='reset'], dialog .dialog-btns [type='submit'] {
+  border-radius: 0.5rem;
+  margin: 0 .25rem;
+  color: black;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 0.25rem 0.5rem;
+  border-color: #000;
+}
+
+dialog .dialog-btns [type='submit'] {
+  background-color: #1B92FC;
+  color: white;
+}
+
+dialog::before {
+  content: attr(title);
+  background-color: #1B92FC;
+  display: block;
+  border-radius: 0.8rem 0.8rem 0 0;
+  margin: 1px;
+  padding: 0.5rem;
+  color: white;
+  font-weight: bold;
+}
+
+.programmatically-destroyed {
+  -webkit-transition: all 0.65s ease-in-out;
+  transition: all 0.65s ease-in-out;
+  opacity: 0;
 }

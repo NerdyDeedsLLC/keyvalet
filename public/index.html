@@ -15,11 +15,21 @@
 </head>
 
 <body>
+    <dialog id="RemoveDialog" title="Remove Binding?">
+        <form onsubmit='return false;'>
+            <div class="dialog-msg">Are you sure you wish to remove this binding?</div>
+            <div class="dialog-btns">
+                <input id="remove-diag-F" type="reset" value="No, I'll Keep It">
+                <input id="remove-diag-T" type="submit" value="Yes, Remove It">
+            </div>
+        </form>
+    </dialog>
+
     <header id="logo">
         <nav>
             <a href="">Instructions</a>
             <a href="">About</a>
-            <a href="">GitHub</a>
+            <a href="#" onclick="return licenseDisplay()">License</a>
         </nav>
         <div>
             <b>KEY</b>
@@ -36,17 +46,160 @@
         <aside>
             <ul>
                 <li><button>Restore Defaults</button></li>
-                <li><button>Hide Default Bindings</button></li>
                 <li>&nbsp;</li>
+                <li><button>Hide Default Bindings</button></li>
                 <li><button id='btn-show-hide-labels' onmousedown="showHideLabels()">Hide Labels</button></li>
                 <li>&nbsp;</li>
                 <li>&nbsp;</li>
                 <li>Output .dict file:</li>
                 <li><textarea name="" id="" cols="30" rows="10"></textarea></li>
+                <li>&nbsp;</li>
+                <li><button id='btn-generate-script' disabled="">Generate Install Script</button></li>
             </ul>
         </aside>
     </main>
-    <footer>&copy; 2018 Nerdy Deeds, LLC. License Type: Offensive Limerick</footer>
+    <footer>
+        &copy; 2018 Nerdy Deeds, LLC. <a href="#" onclick="return licenseDisplay()">License Type: Offensive Limerick</a>
+    </footer>
+    <div id="license">
+        <header>
+            <a href="#" onclick="return licenseDisplay()">✖</a>
+        </header>
+        <div id="license-content">
+            <spanza>
+                There once was a Dev from East Mass.,<br>
+                While intending his code might be passed,<br>
+                Feeling most license types<br>
+                &nbsp; &nbsp;   weren't worth all the hype,<br>
+                Wrote his own as an iconoclast.<br>
+            </spanza>
+            <spanza>
+                His peers thought him a narcissist,<br>
+                To think his could reside 'mongst 
+                <a href="https://choosealicense.com/" target="_blank">the list</a>.<br>
+                But once fully conceived,<br>
+                &nbsp; &nbsp; whate'er believed,<br>
+                Still manages to get Legal pissed.<br>
+            </spanza>
+            <spanza>
+                For he knew that he'd hit on the trick:<br>
+                On how make his license stick:<br>
+                "It should make lawyers pallid<br>
+                &nbsp; &nbsp;  (but be legally valid),<br>
+                And be self-referential as shit!"<br>
+            </spanza>
+            <spanza>
+                So you found this repo at last...<br>
+                And it might help accomplish your task.<br>
+                Now your quandary at hand<br>
+                &nbsp; &nbsp;  is its author's demand<br>
+                You "must leave this notice attached"!?<br>
+            </spanza>
+            <spanza>
+                This license is designed to be<br>
+                A way to ensure that ('least for me!),<br>
+                Should it screw your site up<br>
+                &nbsp; &nbsp;   I can not give a fuck;<br>
+                I'm exempt from liability.<br>
+            </spanza>
+            <spanza>
+                It's not that I don't care; I do!<br>
+                Use as source, even make revenue.<br>
+                Just keep this bit intact<br>
+                &nbsp; &nbsp;   (be the source changed or hacked),<br>
+                And you may treat it like MPL2.<br>
+            </spanza>
+            <spanza>
+                You're thus granted, worldwide & free,<br>
+                Rights to use it for sale or I.P.<br>
+                But with that notwithstanding<br>
+                &nbsp; &nbsp;  it's with the understanding,<br>
+                It's "as-is" (and sans pledge/warranty).<br>
+            </spanza>
+            <spanza>
+                Should trademark/copyright abuse<br>
+                Come from your violating Fair Use:<br>
+                Since, along with the rest,<br>
+                &nbsp; &nbsp;  There's no promise expressed;<br>
+                This paper shield serves as my excuse.<br>
+            </spanza>
+            <spanza>
+                Code you've written on top remains yours,<br>
+                So long as you/your devs have ensured<br>
+                That which came from me,<br>
+                &nbsp; &nbsp;   is available, free,<br>
+                And this verbatim license endures.<br>
+            </spanza>
+            <spanza>
+                Your rights to this license get tossed,<br>
+                If this Open Source notice gets lost.<br>
+                If a lawsuit ensues<br>
+                &nbsp; &nbsp;  due to any abuse,<br>
+                It's on you to pay my legal costs.<br>
+            </spanza>
+            <spanza>
+                So why the rude license in verse?<br>
+                'Tis thoughts of some developer's mirth!<br>
+                I find myself all smiley<br>
+                &nbsp; &nbsp;   (albeit infantile-y)<br>
+                At aggravating corporate stuffed shirts.<br>
+            </spanza>
+            <spanza>
+                Plus years from now, 'cross time & space<br>
+                Once my consciousness's code's been erased<br>
+                Some Dev, far from here,<br>
+                &nbsp; &nbsp;   may snort as it appears,<br>
+                From within some enterprise codebase<br>
+            </spanza>
+            <spanza>
+                Picture his boss as he opines,<br>
+                "Our license's no good, sans these lines.<br>
+                I COULD spend a few sprints<br>
+                &nbsp; &nbsp;  (though'd be time poorly spent)<br>
+                Recoding it (what you decide'll be fine!)."<br>
+            </spanza>
+            <spanza>
+                Mr. Manager, I hope that it's clear:<br>
+                That you MUST see this notice appears.<br>
+                To the Dev: hold your ground.<br>
+                &nbsp; &nbsp;  In three decades I've found<br>
+                wasting money's their primary fear.<br>
+            </spanza>
+            <spanza>
+                Now I've no doubt that there will be some,<br>
+                Who think such immaturity dumb.<br>
+                But those few folk (like me!),<br>
+                &nbsp; &nbsp;  who give out this stuff, free<br>
+                May well see where I'm coming from.<br>
+            </spanza>
+            <spanza>
+                After all, it's a pretty safe bet:<br>
+                Nerd cred's all the thanks that I'll get.<br>
+                Plus telling my grandson (3)<br>
+                &nbsp; &nbsp;  that his old grandpappy<br>
+                Once played keyboard for the Internet.<br>
+            </spanza>
+            <spanza>
+                Thus I hope in my code you've found worth.<br>
+                And in these words equivalent mirth.<br>
+                For we must stick together<br>
+                &nbsp; &nbsp;  (Open Source dictates whether<br>
+                The geek truly inherit the earth).<br>
+            </spanza>
+            <spanza>
+                In truth all I seek's credit due,<br>
+                Without some jerk asserting it's new.<br>
+                So 'fore making the claim,<br>
+                &nbsp; &nbsp;  It was done in your name,<br>
+                Know I use Git/StackOverflow, too.
+            </spanza>
+        </div>
+        <footer>
+            &copy;2016-2018 ZenAtWork / UInIQ / @JJ for Nerdy Deeds, Inc.
+            <a href="#">Pssst! Wanna use this license?</a>
+        </footer> 
+        </content>
+    </div>
     <script type="text/javascript" src="/lib/js/data.lib.js"></script>
     <script async src='http://localhost:3000/browser-sync/browser-sync-client.js?v=2.26.0'></script>
 
