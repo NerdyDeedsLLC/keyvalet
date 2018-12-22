@@ -11,6 +11,7 @@ body {
 $white:#FFF;
 $lightgray:#CCC;
 $gray:#888;
+$darkgray:#333;
 $blue:#1B92FC;
 $black:#000;
 $green:#060;
@@ -19,7 +20,7 @@ $red:#900;
 html,
 body {
     margin: 0;
-    padding: 0;
+    padding: 0 0 3rem 0;
     width: 100vw;
     max-width: 100%;
 }
@@ -33,6 +34,7 @@ html {
 
 body {
   background: linear-gradient(180deg, rgba(210,210,210, 1) 0%, rgba(255, 255, 255, 1) 25%);
+  background-repeat: repeat-x;
 
 }
 
@@ -50,11 +52,12 @@ main {
         min-width: 20%;
         max-width: 20%;
         width: 20%;
-        height: calc(100vh - 1rem);
+        height: calc(100vh - 3rem);
         top: 0;
         position: fixed;
         border: 1px solid $lightgray;
         margin: 0.5rem 0;
+        right:0.5rem;
         background-color: #EEE;
 
         ul,
@@ -118,6 +121,11 @@ main {
 					& > s { // <s>uppressed Behavior (an exisiting keybinding - default or user-created - that has been removed)
 						color:$red;
 					}
+
+					& > u { // <u>nable to comply with double-definition of keybinding (two behaviors share the same binding)
+						color:#CCC000;
+						text-decoration-color: red;
+					}
 				}
 
         li > label {
@@ -134,7 +142,7 @@ main {
         }
 
         li > #output-code {
-            height: calc(100vh - 25rem);
+            height: calc(100vh - 28rem);
             overflow:auto;
             margin-top:0.5rem auto 0;
             border-bottom:0 none;
@@ -976,4 +984,48 @@ dialog {
 
 [disabled] {
 	opacity:0.35;
+}
+
+#PATCHA code {
+		width:90%;
+		display:block;
+		background-color:rgba($lightgray, 0.5);
+		border:1px solid $gray;
+		padding:10px;
+		margin: 0 auto;
+}
+
+body>footer {
+	background-color:$blue;
+	position:fixed;
+	bottom:0;
+	width:100%;
+	height: 1.5rem;
+	line-height: 1.5rem;
+	text-align: center;
+	font-size:.75rem;
+	color:$white;
+	font-weight:bold;
+
+	a {
+		color:white;
+		font-weight: normal;
+		position:absolute;
+		text-decoration: none;
+
+		border-right: 1px solid white;
+		border-left:1px solid white;
+		padding: 0 0.5rem;
+
+		&:first-child{
+			margin-left:2rem;
+			left:0;
+		}
+
+		&:last-child{
+			margin-right:2rem;
+			right:0;
+		}
+	}
+
 }

@@ -25,6 +25,25 @@
         </form>
     </dialog>
 
+    <dialog id="PATCHA" title="PATCHA Verification">
+        <form onsubmit='return false;'>
+            <div class="dialog-msg">
+                The author, in his continuing and valient pre-singularity efforts to establish his <br>
+                willingness to welcome our future robot overlords with open arms, has elected to <br>
+                restrict direct e-mail access to Machine Intelligences, and the occasional gifted <br>
+                programmer. In this spirit:<br><br>
+                <code>
+                    BEEPBOOP! Prove you're a robot.<br><br>
+                    0.1 + 0.2 = ____?
+                </code>
+            </div>
+            <div class="dialog-btns">
+                <input id="remove-diag-T" type="reset" value="0.30000000000000004">
+                <input id="remove-diag-F" type="submit" value="                   0.3                   ">
+            </div>
+        </form>
+    </dialog>
+
     <header id="logo">
         <nav>
             <a href="">Instructions</a>
@@ -68,7 +87,9 @@
         </aside>
     </main>
     <footer>
-        &copy; 2018 Nerdy Deeds, LLC. <a href="#" onclick="return licenseDisplay()">License Type: Offensive Limerick</a>
+        &copy; 2018 Nerdy Deeds, LLC. 
+        <a href="#" onclick="return contactAuthor()">Contact Author</a>
+        <a href="#" onclick="return licenseDisplay()">License Type: Offensive Limerick</a>
     </footer>
     <div id="license">
         <header>

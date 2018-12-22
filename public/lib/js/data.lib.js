@@ -1,7 +1,44 @@
 const w = window,
       d = document,
       h = d.getElementsByTagName('html')[0];
+var removedBehaviors = [];
+var collapsedBehaviors = [];
 var isDirtyForm = false;
+
+const parentSelector = function (elem, selector, closestReturn = true) {
+  // Element.matches() polyfill
+  if (!Element.prototype.matches) {
+    Element.prototype.matches = Element.prototype.matchesSelector || Element.prototype.mozMatchesSelector || Element.prototype.msMatchesSelector || Element.prototype.oMatchesSelector || Element.prototype.webkitMatchesSelector || function (s) {
+      var matches = (this.document || this.ownerDocument).querySelectorAll(s),
+          i = matches.length;
+
+      while (--i >= 0 && matches.item(i) !== this) {
+        /* Iterate the located elements */
+      }
+
+      return i > -1;
+    };
+  }
+
+  let matchedElements = [];
+  elem = elem.parentNode;
+
+  for (; elem && elem !== document; elem = elem.parentNode) {
+    if (elem.matches(selector)) {
+      matchedElements.push(elem);
+    }
+  }
+
+  if (matchedElements.length === 0) {
+    return null;
+  } else {
+    return closestReturn ? matchedElements[0] : matchedElements;
+  }
+};
+
+const parentSelectorAll = function (elem, selector) {
+  return parentSelector(elem, selector, false);
+};
 /**
  * @name                        availableMethods 
  * @type                        {Object}
@@ -12,6 +49,7 @@ var isDirtyForm = false;
  *                               - RD (Right/Down) or "toward the end of the line or document from the current cursor position"
  *                              ...and further sub-categorized into the respective components of each: "left" & "up" in LU, etc.
  */
+
 
 const availableMethods = {
   'LU': {
@@ -247,18 +285,18 @@ const generateSingleBinding = (keyID, keyLabel, keyName, dirSet, record, instanc
                             <tr>
                                 <th colspan="6">
                                     ${humanFriendlyKCode}
-                                    <span class="codeblock" id="codeblock-${instanceCt}">"$~\\UF702" = moveWordLeftAndModifySelection:;</span>
+                                    <span class="codeblock" id="codeblock-${instanceCt}"></span>
                                 </th>
                             </tr>
                         </thead>
                         <tr>
-                            <td><input type="checkbox" id="modifier-set-${instanceCt}-${keyID}-SHF" name="modifier-set-${keyID}-SHF" class="modifier-keyset" value="$" ${~kCode.indexOf('$') ? "checked" : ""}><label for="modifier-set-${instanceCt}-${keyID}-SHF"> <span class="wide" data-keycap="Shift"></span> Shift</label></td>
-                            <td><input type="checkbox" id="modifier-set-${instanceCt}-${keyID}-CMD" name="modifier-set-${keyID}-CMD" class="modifier-keyset" value="@" ${~kCode.indexOf('@') ? "checked" : ""}><label for="modifier-set-${instanceCt}-${keyID}-CMD"> <span data-keycap="⌘"></span> Cmd</label></td>
-                            <td><input type="checkbox" id="modifier-set-${instanceCt}-${keyID}-ALT" name="modifier-set-${keyID}-ALT" class="modifier-keyset" value="~" ${~kCode.indexOf('~') ? "checked" : ""}><label for="modifier-set-${instanceCt}-${keyID}-ALT"> <span data-keycap="⌥"></span> Opt/Alt</label></td>
-                            <td><input type="checkbox" id="modifier-set-${instanceCt}-${keyID}-CTL" name="modifier-set-${keyID}-CTL" class="modifier-keyset" value="^" ${~kCode.indexOf('^') ? "checked" : ""}><label for="modifier-set-${instanceCt}-${keyID}-CTL"> <span data-keycap="^"></span> Ctrl</label></td>
+                            <td><input type="checkbox" id="modifier-set-${instanceCt}-${keyID}-SHF" name="modifier-set-${keyID}-SHF" class="modifier-keyset" value="$" onchange="processRules();" ${~kCode.indexOf('$') ? "checked" : ""}><label for="modifier-set-${instanceCt}-${keyID}-SHF"> <span class="wide" data-keycap="Shift"></span> Shift</label></td>
+                            <td><input type="checkbox" id="modifier-set-${instanceCt}-${keyID}-CMD" name="modifier-set-${keyID}-CMD" class="modifier-keyset" value="@" onchange="processRules();" ${~kCode.indexOf('@') ? "checked" : ""}><label for="modifier-set-${instanceCt}-${keyID}-CMD"> <span data-keycap="⌘"></span> Cmd</label></td>
+                            <td><input type="checkbox" id="modifier-set-${instanceCt}-${keyID}-ALT" name="modifier-set-${keyID}-ALT" class="modifier-keyset" value="~" onchange="processRules();" ${~kCode.indexOf('~') ? "checked" : ""}><label for="modifier-set-${instanceCt}-${keyID}-ALT"> <span data-keycap="⌥"></span> Opt/Alt</label></td>
+                            <td><input type="checkbox" id="modifier-set-${instanceCt}-${keyID}-CTL" name="modifier-set-${keyID}-CTL" class="modifier-keyset" value="^" onchange="processRules();" ${~kCode.indexOf('^') ? "checked" : ""}><label for="modifier-set-${instanceCt}-${keyID}-CTL"> <span data-keycap="^"></span> Ctrl</label></td>
                             <td>
                                 Desired behavior:<br>
-                                <select id="behavior-set-${instanceCt}-${keyID}" name="behavior-set-${instanceCt}-${keyID}" class="rule-behaviors">
+                                <select id="behavior-set-${instanceCt}-${keyID}" name="behavior-set-${instanceCt}-${keyID}" class="rule-behaviors" onchange="processRules();">
                                     ${behaviorOpts}
                                 </select>
                             </td>
@@ -300,7 +338,7 @@ const generateSingleBinding = (keyID, keyLabel, keyName, dirSet, record, instanc
 const generateAllBindingsForKey = (keyID, keyLabel, keyName, bindingSet, dirSet, bindingCount = bindingSet.length) => {
   instanceCt = 1;
   let HTMLOutput = `<section id="ruleset-key-${keyID}">
-                        <input type="checkbox" id="enable-keyset-${keyID}" name="enable-keyset-${keyID}" class="enable-rule" value="1" checked><label for="enable-keyset-${keyID}"><span data-keycap="${keyLabel}" class="header"></span> ${keyName}</label></td>
+                        <input type="checkbox" id="enable-keyset-${keyID}" name="enable-keyset-${keyID}" class="enable-rule" value="1" checked onchange="processRules()"><label for="enable-keyset-${keyID}"><span data-keycap="${keyLabel}" class="header"></span> ${keyName}</label></td>
                         <span class="rule-count" id="${keyID}-activeCount">${bindingCount}</span>
                         <div id="rules-for-${keyID}" class="interactive-form">`;
   bindingSet.forEach(o => {
@@ -328,30 +366,70 @@ const generateAllBindingsForKey = (keyID, keyLabel, keyName, bindingSet, dirSet,
  * @param  {bool}   updateSweep [DEFAULT: TRUE] Indicates current Sweep Mode: Initial Page Load (F) or OnChange Event (T)
  * @return {bool}               Returns true if successful. TODO: Return false+object in the case of a trapped error
  */
+// const processRules = (updateSweep=true) => {
+//     isDirtyForm        = updateSweep;
+//     d.getElementById('btn-generate-script').disabled = !isDirtyForm;
+//     let extantRuleSets = [...document.querySelectorAll('.rule-scope')];
+//     let datasetNameMod = (updateSweep) ? 'edited' : '';
+//     extantRuleSets.forEach(rs => {
+//         let rsModKeyId = rs.dataset.key;
+//         let rsModKeys  = rs.querySelectorAll('[checked]');
+//         let rsModRule  = rs.querySelector('select').value;
+//         if(rsModKeys.length !== 0){
+//           console.log(rsModKeys.length)
+//             rsModKeys=([...rsModKeys].map(rsmk => rsmk.id.slice(-3)).join('+'));
+//             rsModKeys=(rsModKeys === '') ? rsModKeyId : rsModKeys + '+' + rsModKeyId;
+//             rs.dataset[datasetNameMod + 'combo'] = rsModKeys;
+//         }
+//         if(null != rsModRule){ rs.dataset[datasetNameMod + 'behavior'] = rsModRule; }
+//     });
+//     updateAllUserVisibleText();
+//     return true;
+// };
 
 
-const processRules = (updateSweep = true) => {
-  isDirtyForm = updateSweep;
-  d.getElementById('btn-generate-script').disabled = !isDirtyForm;
-  let extantRuleSets = [...document.querySelectorAll('.rule-scope')];
-  let datasetNameMod = updateSweep ? 'edited' : '';
-  extantRuleSets.forEach(rs => {
-    let rsModKeyId = rs.dataset.key;
-    let rsModKeys = rs.querySelectorAll('[checked]');
-    let rsModRule = rs.querySelector('select').value;
+const updateInlineCodeBlocks = () => {
+  const dictOP = document.getElementById('output-code');
+  dictOP.innerHTML = '';
+  removedBehaviors.forEach(b => dictOP.innerHTML += `<s>${b}</s><br>`);
+  document.querySelectorAll(':checked ~ .interactive-form .rule-scope').forEach(rso => {
+    let rsDS = rso.dataset;
+    let rsRule = ''; // If this is true, either this is the initial seed value, it remains unchanged by the user, or the user has switched it BACK to the
+    // initial value. In ANY of these cases, it should appear as greyed text, and not be included in the generated install script.
 
-    if (null != rsModKeys) {
-      rsModKeys = [...rsModKeys].map(rsmk => rsmk.id.slice(-3)).join('+');
-      rsModKeys = rsModKeys === '' ? rsModKeyId : rsModKeys + '+' + rsModKeyId;
-      rs.dataset[datasetNameMod + 'combo'] = rsModKeys;
+    if (rsDS.updatedKeychord == null || rsDS.defaultKeychord === rsDS.updatedKeychord && rsDS.defaultBehavior === rsDS.updatedBehavior) {
+      rsRule = `"${rsDS.defaultKeychord}" = ${rsDS.defaultBehavior}:;`;
+    } else {
+      // Rules within this block HAVE been altered from their defaults/just been created. If there IS NO default value...
+      // ...we may assume this is an entirely new binding the user <i>ntroduced. Otherwise, it's <b>orrowing an exisiting binding.
+      let colorTag = rsDS.defaultKeychord == null ? 'i' : 'b';
+      rsRule = `<${colorTag}>"${rsDS.updatedKeychord}" = ${rsDS.updatedBehavior}:;</${colorTag}>`;
     }
 
-    if (null != rsModRule) {
-      rs.dataset[datasetNameMod + 'behavior'] = rsModRule;
+    dictOP.innerHTML += combo2Machine(rsRule) + "<br>";
+  });
+};
+
+const processRules = () => {
+  let extantRuleSets = [...document.querySelectorAll(':checked ~ .interactive-form .rule-scope')];
+  extantRuleSets.forEach(rs => {
+    let rsModKeyId = rs.dataset.key,
+        rsModKeys = [...rs.querySelectorAll(':checked')].map(rsmk => rsmk.id.slice(-3)).join('+'),
+        rsModRule = rs.querySelector('select').value,
+        rsCodeOP = rs.querySelector('.codeblock');
+    let resultingRule = `"${rsModKeys + rsModKeyId}" = ${rsModRule}:;`;
+    rsCodeOP.innerHTML = combo2Machine(resultingRule); // The only time we set the defaults is on our initial sweep. The isDirty check prevents this from happening
+    // since it's set by ANYTHING changing after load (otherwise, adding a new binding would trigger this effect)
+
+    if (null == rs.dataset.defaultKeychord && !isDirtyForm) {
+      rs.dataset.defaultKeychord = rsModKeys + rsModKeyId;
+      rs.dataset.defaultBehavior = rsModRule;
+    } else {
+      rs.dataset.updatedKeychord = rsModKeys + rsModKeyId;
+      rs.dataset.updatedBehavior = rsModRule;
     }
   });
   updateAllUserVisibleText();
-  return true;
 };
 /**
  * @name                        showHideLabels
@@ -407,6 +485,11 @@ const licenseDisplay = () => {
   return false;
 };
 
+const updateKeybinding = (targetKey = event.target) => {
+  let bindingNode = parentSelector(targetKey, 'table');
+  console.log(bindingNode, "is the parent <table> of the clicked", targetKey);
+};
+
 const removeBinding = (sourceObj, diagID, instanceCt, keyID) => {
   h.className += " dialog-visible";
   d.getElementById(diagID).style.display = 'block';
@@ -417,6 +500,45 @@ const removeBinding = (sourceObj, diagID, instanceCt, keyID) => {
     d.getElementById(diagID).style.display = 'none';
     h.className = h.className.replace(" dialog-visible", "");
     var event = new CustomEvent('dialogClose', {
+      detail: {
+        dialogID: diagID,
+        dialogValue: result,
+        data: data
+      },
+      bubbles: false
+    });
+    this.dispatchEvent(event);
+  };
+
+  okButton.onclick = () => {
+    resolve('RemoveDialog', true, {
+      sourceObj,
+      diagID,
+      instanceCt,
+      keyID
+    });
+  };
+
+  cancelButton.onclick = () => {
+    resolve('RemoveDialog', false, {
+      sourceObj,
+      diagID,
+      instanceCt,
+      keyID
+    });
+  };
+};
+
+const contactAuthor = (diagID = 'PATCHA') => {
+  h.className += " dialog-visible";
+  d.getElementById(diagID).style.display = 'block';
+  let okButton = d.getElementById("remove-diag-T"),
+      cancelButton = d.getElementById("remove-diag-F");
+
+  const resolve = (diagID, result, data) => {
+    d.getElementById(diagID).style.display = 'none';
+    h.className = h.className.replace(" dialog-visible", "");
+    var event = new CustomEvent('sendEmail', {
       detail: {
         dialogID: diagID,
         dialogValue: result,
@@ -464,7 +586,11 @@ const resolveDialog = (e, detail = e.detail, dialog = detail.dialogID, value = d
     case 'RemoveDialog':
       // Removes a Key Binding
       value = value || false;
-      let bindingToRemove = d.querySelector(`[data-key='${data.keyID}'][data-instance='${data.instanceCt}']`);
+      let bindingToRemove = d.querySelector(`[data-key='${data.keyID}'][data-instance='${data.instanceCt}']`),
+          rsDS = bindingToRemove.dataset,
+          modState = rsDS.updatedKeychord ? 'updated' : 'default',
+          remRule = combo2Machine(`"${rsDS[modState + 'Keychord']}" = ${rsDS[modState + 'Behavior']}:;`);
+      if (removedBehaviors.indexOf(remRule) === -1) removedBehaviors.push(remRule);
       bindingToRemove.className += ' programmatically-destroyed';
 
       if (value && bindingToRemove) {
@@ -475,6 +601,9 @@ const resolveDialog = (e, detail = e.detail, dialog = detail.dialogID, value = d
       }
 
       break;
+
+    case 'sendEmail':
+      break;
   }
 };
 
@@ -483,25 +612,6 @@ const combo2Machine = text => text.replace('SHF+', '$').replace('CMD+', '@').rep
 const updateActiveBindingCounts = () => {
   document.querySelectorAll('section').forEach(set => set.querySelector('.rule-count').innerHTML = set.querySelectorAll('table').length);
 };
-
-const updateInlineCodeBlocks = () => {
-  const dictOP = document.getElementById('output-code');
-  dictOP.innerHTML = '';
-  document.querySelectorAll('.rule-scope').forEach(rso => {
-    let rsoCodeOutput = '';
-
-    if (null == rso.dataset.editedcombo || rso.dataset.combo === rso.dataset.editedcombo && rso.dataset.behavior === rso.dataset.editedbehavior) {
-      rsoCodeOutput = `"${combo2Machine(rso.dataset.combo)}" = ${rso.querySelector('select').value}:;`;
-    } else {
-      rsoCodeOutput = `<i>"${combo2Machine(rso.dataset.editedcombo)}" = ${rso.querySelector('select').value}:;</i>`;
-    }
-
-    rso.querySelector('.codeblock').innerHTML = rsoCodeOutput;
-    dictOP.innerHTML += rsoCodeOutput + "<br>";
-  });
-};
-
-const updateOnScreenDictCode = () => {};
 
 const updateAllUserVisibleText = () => {
   updateInlineCodeBlocks();

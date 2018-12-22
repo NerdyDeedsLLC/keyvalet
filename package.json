@@ -17,9 +17,9 @@
   "author": "Nerdy Deeds, LLC",
   "license": "ISC",
   "dependencies": {
-    "@babel/core": "^7.1.2",
+    "@babel/core": "^7.2.2",
     "async": "^2.6.1",
-    "browser-sync": "^2.26.0",
+    "browser-sync": "^2.26.3",
     "bulma": "^0.7.2",
     "dialog-polyfill": "^0.4.10",
     "gsap": "^2.0.2",
@@ -29,14 +29,14 @@
     "gulp-fn": "0.0.3",
     "gulp-postcss": "^8.0.0",
     "gulp-run-command": "0.0.9",
-    "gulp-sass": "^4.0.1",
+    "gulp-sass": "^4.0.2",
     "gulp-watch": "^5.0.1",
     "known-css-properties": "^0.5.0",
     "minimatch": "^3.0.2",
-    "moment": "^2.22.2",
+    "moment": "^2.23.0",
     "request": "^2.88.0",
     "rucksack-css": "^1.0.2",
-    "sass": "^1.14.1"
+    "sass": "^1.15.2"
   },
   "devDependencies": {
     "gulp-changed": "^3.2.0",
