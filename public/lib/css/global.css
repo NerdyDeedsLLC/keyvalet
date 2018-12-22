@@ -867,7 +867,7 @@ html.license-visible #license footer a {
 dialog {
   -webkit-transition: all .2s ease-out;
   transition: all .2s ease-out;
-  z-index: 100000;
+  z-index: 100;
   position: fixed;
   top: -50%;
   -webkit-transform: translate(0, -50%);
@@ -966,4 +966,242 @@ body > footer a:first-child {
 body > footer a:last-child {
   margin-right: 2rem;
   right: 0;
+}
+
+#instructionLayer {
+  display: block;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+#instructionLayer .bubble {
+  background: #0D5294;
+  padding: 1.5rem;
+  position: fixed;
+  border-radius: 1.75rem;
+  color: #FFF;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+}
+
+#instructionLayer .bubble.tl::after, #instructionLayer .bubble.tr::after, #instructionLayer .bubble.t::after, #instructionLayer .bubble.r::after, #instructionLayer .bubble.b::after, #instructionLayer .bubble.bl::after, #instructionLayer .bubble.br::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 1rem solid transparent;
+}
+
+#instructionLayer .bubble.tl::after, #instructionLayer .bubble.tr::after, #instructionLayer .bubble.t::after {
+  top: 0;
+  border-bottom-color: #0D5294;
+  border-top: 0;
+  margin-top: -1rem;
+}
+
+#instructionLayer .bubble.bl::after, #instructionLayer .bubble.br::after, #instructionLayer .bubble.b::after {
+  bottom: 0;
+  border-top-color: #0D5294;
+  border-bottom: 0;
+  margin-bottom: -1rem;
+}
+
+#instructionLayer .bubble.r::after {
+  right: 0;
+  top: 50%;
+  border-left-color: #0D5294;
+  border-right: 0;
+  margin-top: -1rem;
+  margin-right: -0.75rem;
+}
+
+#instructionLayer .bubble.t::after {
+  left: 50%;
+  margin-left: -0.5rem;
+}
+
+#instructionLayer .bubble.tl::after {
+  left: 50%;
+  margin-left: -4rem;
+  border-left: 0;
+}
+
+#instructionLayer .bubble.tr::after {
+  right: 50%;
+  border-right: 0;
+  margin-right: -4rem;
+}
+
+#instructionLayer .bubble.bl::after {
+  left: 6rem;
+  border-left: 0;
+  margin-left: -4rem;
+}
+
+#instructionLayer nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 40%;
+  bottom: 40%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  text-align: center;
+}
+
+#instructionLayer nav div {
+  background-color: #9BCFFC;
+  padding: 2rem 2rem 3rem;
+  border-radius: 2rem;
+  -webkit-box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.65);
+          box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.65);
+}
+
+#instructionLayer nav div button {
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+
+#instructionLayer nav div button:nth-of-type(1) {
+  background-color: #1B92FC;
+  border: 1px solid #1B92FC;
+  color: #FFF;
+}
+
+#instructionLayer nav div button:nth-of-type(2) {
+  background-color: #FFF;
+  border: 1px solid #0D5294;
+  color: #0D5294;
+}
+
+#instructionLayer nav div button:nth-of-type(3) {
+  background-color: #0D5294;
+  border: 1px solid #0D5294;
+  color: #FFF;
+}
+
+#instructionLayer nav div button + button {
+  margin-left: 1rem;
+}
+
+#instructionLayer #menu-bubbles {
+  display: none;
+}
+
+#instructionLayer #menu-bubbles .bubble {
+  max-width: 12rem;
+}
+
+#instructionLayer #menu-bubbles .bubble:nth-child(2) {
+  top: 3rem;
+  left: 5rem;
+}
+
+#instructionLayer #menu-bubbles .bubble:nth-child(3) {
+  top: 3rem;
+  right: 33.5rem;
+}
+
+#instructionLayer #menu-bubbles .bubble:nth-child(4) {
+  top: 3rem;
+  right: 21rem;
+}
+
+#instructionLayer #menu-bubbles .bubble:nth-child(5) {
+  left: 3rem;
+  bottom: 2rem;
+}
+
+#instructionLayer #menu-bubbles .bubble:nth-child(6) {
+  bottom: 2rem;
+  right: 2rem;
+}
+
+#instructionLayer #menu-bubbles .blotter {
+  background-color: rgba(255, 255, 255, 0.66);
+  position: fixed;
+  top: 12rem;
+  left: 0;
+  right: 21.5rem;
+  bottom: 1.5rem;
+}
+
+#instructionLayer #menu-bubbles .blotter::after {
+  content: '';
+  background-color: rgba(255, 255, 255, 0.66);
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 84rem;
+  bottom: 1.5rem;
+}
+
+#instructionLayer #binding-bubbles {
+  display: block;
+}
+
+#instructionLayer #binding-bubbles .bubble {
+  max-width: 25rem;
+}
+
+#instructionLayer #binding-bubbles .bubble:nth-child(2) {
+  top: 7.25rem;
+  left: 1rem;
+}
+
+#instructionLayer #binding-bubbles .bubble:nth-child(3) {
+  top: 24.5rem;
+  left: 2.25rem;
+}
+
+#instructionLayer #binding-bubbles .bubble:nth-child(4) {
+  top: 24rem;
+  left: 37.5rem;
+}
+
+#instructionLayer #binding-bubbles .bubble:nth-child(5) {
+  right: 29rem;
+  top: 11.5rem;
+}
+
+#instructionLayer #binding-bubbles .bubble:nth-child(6) {
+  top: 16.25rem;
+  right: 33rem;
+}
+
+#instructionLayer #binding-bubbles .bubble:nth-child(7) {
+  top: 23rem;
+  right: 13.5rem;
+}
+
+#instructionLayer #binding-bubbles .blotter {
+  background-color: rgba(255, 255, 255, 0.66);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 21.5rem;
+  height: 12rem;
+}
+
+#instructionLayer #binding-bubbles .blotter::after {
+  content: '';
+  background-color: rgba(255, 255, 255, 0.66);
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 84rem;
+  bottom: 1.5rem;
 }

@@ -617,6 +617,29 @@ const updateAllUserVisibleText = () => {
   updateInlineCodeBlocks();
   updateActiveBindingCounts();
 };
+
+const instructNav = (operator = '+') => {
+  let iL = d.getElementById('instructionLayer');
+
+  if (operator === 'x' || operator === 'o') {
+    instructNav('RESET');
+    iL.style.display = operator === 'o' ? 'block' : 'none';
+    return false;
+  }
+
+  var allPanels = [...d.querySelectorAll('.bubble-set')];
+  var activePanel = 0;
+  allPanels.forEach(p => {
+    if (w.getComputedStyle(p).display !== 'none') {
+      activePanel = p.className.replace(/\s*bubble-set\s*/, '');
+    }
+
+    p.style.display = 'none';
+  });
+  let newActivePanel = operator === 'RESET' ? 1 : (operator + '1') / 1 + activePanel / 1;
+  allPanels[newActivePanel - 1].style.display = 'block';
+  return newActivePanel;
+};
 /**
  * @name                        init
  * @type                        {function}
