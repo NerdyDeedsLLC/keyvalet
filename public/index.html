@@ -18,11 +18,11 @@
     <div id="instructionLayer">
         <div id="menu-bubbles" class="bubble-set 1">
             <div class="blotter"></div>
-            <div class="bubble tl">Launches this Instructional Overlay</div>
-            <div class="bubble tr">Displays the author's information</div>
-            <div class="bubble t">Displays the details of this software's license</div>
-            <div class="bubble bl">Displays the author's contact information</div>
-            <div class="bubble b">Provides access to this project on GitHub.</div>
+            <div id="bbl-instr" class="bubble t">Launches this Instructional Overlay</div>
+            <div id="bbl-authr" class="bubble tr">Displays the author's information</div>
+            <div id="bbl-licns" class="bubble tl">Displays the details of this software's license</div>
+            <div id="bbl-email" class="bubble bl">Displays the author's contact information</div>
+            <div id="bbl-ghrpo" class="bubble br">Provides access to this project on GitHub.</div>
             <nav>
                 <div>
                     <h1>Instructions: Links</h1>
@@ -34,18 +34,35 @@
         </div>
         <div id="binding-bubbles" class="bubble-set 2">
             <div class="blotter"></div>
-            <div class="bubble bl">Include/exclude this KEY when creating bindings (i.e. ALL bindings associated with it)</div>
-            <div class="bubble tl">Modifier keys for this single binding's chord (i.e. <b>Ctrl+</b>End). Click to include/exclude (glowing indicates included).</div>
-            <div class="bubble t">The desired behavior for this individual binding (i.e. what should this key chord DO, if pressed) </div>
-            <div class="bubble r">The total number of bindings centered on this key</div>
-            <div class="bubble r">The OSX .dict code for this binding's behavior</div>
-            <div class="bubble t">Remove this individual binding entirely</div>
+            <div id="bbl-iekey" class="bubble bl">Include/exclude this KEY when creating bindings (i.e. ALL bindings associated with it)</div>
+            <div id="bbl-modky" class="bubble tl">Modifier keys for this single binding's chord (i.e. <b>Ctrl+</b>End). Click to include/exclude (glowing indicates included).</div>
+            <div id="bbl-actin" class="bubble t">The desired behavior for this individual binding (i.e. what should this key chord DO, if pressed) </div>
+            <div id="bbl-count" class="bubble r">The total number of bindings centered on this key</div>
+            <div id="bbl-xdict" class="bubble r">The OSX .dict code for this binding's behavior</div>
+            <div id="bbl-delbt" class="bubble t">Remove this individual binding entirely</div>
             <nav>
                 <div>
                     <h1>Instructions: Changing Keybindings</h1>
                     <button onmousedown="instructNav('-')">☚ Prev ☚</button>
                     <button onmousedown="instructNav('x')">⨂ Never mind. ⨂</button>
                     <button onmousedown="instructNav('+')">☛ Next ☛</button>
+                </div>
+            </nav>
+        </div>
+        <div id="application-bubbles" class="bubble-set 3">
+            <div class="blotter"></div>
+            <div id="bbl-dflts" class="bubble r">Restores all binding to their OS-X defaults</div>
+            <div id="bbl-hsdef" class="bubble r">Removes/restores the default bindings from the output .dict file script</div>
+            <div id="bbl-hslbl" class="bubble r">Shows/hides the labels in the Keybindings UI</div>
+            <div id="bbl-odict" class="bubble r">The full list of OSX keybindings to include in the install script</div>
+            <div id="bbl-clrky" class="bubble r">Key describing the convenience coloring used in the OSX keybindings</div>
+            <div id="bbl-instl" class="bubble r">Generates the final install script, once you're finished setting your bindings</div>
+            <nav>
+                <div>
+                    <h1>Instructions: Software Interface</h1>
+                    <button onmousedown="instructNav('-')">☚ Prev ☚</button>
+                    <button onmousedown="instructNav('x')">⨂ Never mind. ⨂</button>
+                    <button onmousedown="instructNav('x')">✔︎ Gotcha ✔︎</button>
                 </div>
             </nav>
         </div>
@@ -81,9 +98,9 @@
 
     <header id="logo">
         <nav>
-            <a href="#" onclick="return instructNav('o')">Instructions</a>
-            <a href="">About</a>
-            <a href="#" onclick="return licenseDisplay()">License</a>
+            <a href="#" onclick="return instructNav('o')" data-bbl="bbl-instr" data-bbl-pos="bc">Instructions</a>
+            <a href="#" onclick="return instructNav('o')" data-bbl="bbl-authr" data-bbl-pos="bl">About</a>
+            <a href="#" onclick="return licenseDisplay()" data-bbl="bbl-licns" data-bbl-pos="br">License</a>
         </nav>
         <div>
             <b>KEY</b>
@@ -99,16 +116,16 @@
         </article>
         <aside>
             <ul>
-                <li><button>Restore Defaults</button></li>
+                <li><button data-bbl="bbl-dflts" data-bbl-pos="lm" onclick='window.location.reload()'>Restore Defaults</button></li>
                 <li>&nbsp;</li>
-                <li><button>Hide Default Bindings</button></li>
-                <li><button id='btn-show-hide-labels' onmousedown="showHideLabels()">Hide Labels</button></li>
+                <li><button data-bbl="bbl-hsdef" data-bbl-pos="lm">Hide Default Bindings</button></li>
+                <li><button data-bbl="bbl-hslbl" data-bbl-pos="lm" id='btn-show-hide-labels' onmousedown="showHideLabels()">Hide Labels</button></li>
                 <li>&nbsp;</li>
                 <li>&nbsp;</li>
-                <li><label>Output .dict file:</label></li>
+                <li><label data-bbl="bbl-odict" data-bbl-offsetY="50">Output .dict file:</label></li>
                 <li><div id="output-code"></div></li>
                 <li>
-                    <div id="key">
+                    <div id="key" data-bbl="bbl-clrky" data-bbl-offsetY="50">
                         <strong>Ouput .dict Color-Coding Key:</strong><br>
                         Default behavior<br>
                         <i>Newly-added behavior</i><br>
@@ -117,14 +134,14 @@
                     </div>
                 </li>
                 <li>&nbsp;</li>
-                <li><button id='btn-generate-script' disabled="">Generate Install Script</button></li>
+                <li><button data-bbl="bbl-instl" data-bbl-pos="lm" id='btn-generate-script' disabled="" onmouseup="saveBindings()">Generate Install Script</button></li>
             </ul>
         </aside>
     </main>
     <footer>
         &copy; 2018 Nerdy Deeds, LLC. 
-        <a href="#" onclick="return contactAuthor()">Contact Author</a>
-        <a href="#" onclick="return licenseDisplay()">License Type: Offensive Limerick</a>
+        <a href="#" data-bbl="bbl-email" data-bbl-pos="tr" data-bbl-offsetY="-5" onclick="return contactAuthor()">Contact Author</a>
+        <a href="#" data-bbl="bbl-ghrpo" data-bbl-pos="tl" data-bbl-offsetY="-5" onclick="return licenseDisplay()">GitHub Repository</a>
     </footer>
     <div id="license">
         <header>

@@ -427,6 +427,8 @@ const processRules = () => {
     } else {
       rs.dataset.updatedKeychord = rsModKeys + rsModKeyId;
       rs.dataset.updatedBehavior = rsModRule;
+      isDirtyForm = true;
+      d.getElementById('btn-generate-script').disabled = false;
     }
   });
   updateAllUserVisibleText();
@@ -527,6 +529,35 @@ const removeBinding = (sourceObj, diagID, instanceCt, keyID) => {
       keyID
     });
   };
+};
+
+const saveBindings = () => {
+  let opcObj = d.getElementById('output-code'),
+      opcTxt = opcObj.innerHTML,
+      opcBk = opcTxt;
+  opcTxt = opcTxt.split("<br>");
+  opcObj.innerHTML = opcTxt.filter(rule => rule.indexOf("<") !== -1).join('\n  ');
+  opcTxt = opcObj.innerText;
+  let scriptText = `# Created By KeyValet
+echo "Gather your sudo access right up front (and therefore only once):"
+sudo echo "Thank you!"
+sudo touch ~/Library/KeyBindings/DefaultKeyBinding.dict
+
+sudo cat <<EOF > ~/Library/KeyBindings/DefaultKeyBinding.dict
+{
+  ${opcTxt}
+}
+EOF`,
+      blob = new Blob([scriptText], {
+    type: 'text/plain'
+  }),
+      anchor = document.createElement('a');
+  anchor.download = "set_bindings.sh";
+  anchor.href = (window.webkitURL || window.URL).createObjectURL(blob);
+  anchor.dataset.downloadurl = ['text/plain', anchor.download, anchor.href].join(':');
+  anchor.click();
+  opcObj.innerHTML = opcBk;
+  anchor = null;
 };
 
 const contactAuthor = (diagID = 'PATCHA') => {
@@ -668,3 +699,303 @@ const init = () => {
 };
 
 init();
+var reticle = {
+  retObj: null,
+  // VAR: retObj          Storage object for the reticle HTML object
+  retColor: 'red',
+  // VAR: retColor        Default color of the reticle and its text
+  ret: function () {
+    // FN:  ret()           Creates the reticle HTML object (if not present), and
+    this.retObj = document.querySelector(".reticle") || null; //                      returns it (be it newly-created or already-extant)
+
+    if (this.retObj !== null) {
+      //      params:         NONE
+      return this.retObj;
+    } else {
+      let clrVar = `style="--reticle-color:${this.retColor}"`; // TODO: Modify the reticle so it's position is dictated by CSS variables
+
+      document.body.innerHTML += `<span class="reticle" ${clrVar}>(0,0)</span>`;
+      this.retObj = document.querySelector(".reticle");
+    }
+
+    return this.retObj;
+  },
+  place: function (x = 0, y = 0) {
+    // FN: place(x,y)       Drops the reticle at the X/Y coordinates specified. 
+    let rO = this.ret(); //                      Note these are ON-SCREEN coordinates, and don't account for
+
+    rO.style.top = y + 'px'; //                      page scrolling (due to absolutely-positioning the reticle)
+
+    rO.style.left = x + 'px'; //     params:          x - the X-coordinate we want to place the reticle center at 
+
+    rO.innerHTML = `(${x + ',' + y})`; //                      y - the Y-coordinate we want to place the reticle center at 
+
+    this.show();
+  },
+  target: function (objQS) {
+    // FN: target(objQS)    Drops the reticle at TOP LEFT of the FIRST ELEMENT
+    let obj = typeof objQS === 'string' ? document.querySelector(objQS) : objQS; //                      returned that matches the QuerySelector provided
+
+    if (objQS == null) return false; //     params:          objQS - The QuerySelector that will be matched to target the
+
+    obj = obj.getBoundingClientRect(); //                              element we wish to target
+
+    this.place(obj.x, obj.y); //                      Also will accept an htmlElement object.
+
+    this.show();
+  },
+  clickShowFn: function (e) {
+    // FN: clickShowFn(e)   Internal method compartmentalizing the place() function
+    reticle.place(e.pageX, e.pageY); //     params:          e - Window's event object used to determine click X/Y
+  },
+  enableOnClick: function () {
+    // FN: enableOnClick()  Enables the reticle's "place wherever user just clicked" mode
+    this.hide(); //      params:         NONE
+
+    this.color('#070');
+    window.addEventListener('mouseup', this.clickShowFn);
+  },
+  disableOnClick: function () {
+    // FN: disableOnClick() Disables the reticle's "place wherever user just clicked" mode
+    this.hide(); //      params:         NONE
+
+    window.removeEventListener('mouseup', this.clickShowFn);
+    this.color('#F00');
+  },
+  color: function (clr) {
+    // FN: color(clr)       Sets the reticle's and its text's color to the specified string
+    this.retColor = clr; //      params:         clr - Color string to set the reticle and text to (supports hex,
+
+    this.ret().style.setProperty('--reticle-color', clr); //                      rgb, rgba, and color names)
+  },
+  show: function () {
+    this.ret().style.display = 'block';
+  },
+  // FN: show()           Helper function to make the reticle visible
+  hide: function () {
+    this.ret().style.display = 'none';
+  },
+  // FN: hide()           Helper function to hide the reticle
+  orient: function (objQS, rPos = 'tl', offsetWidth = 0, offsetHeight = 0) {
+    try {
+      // objQS accepts a QuerySelector string or an HTMLElement
+      let obj = typeof objQS === 'string' ? document.querySelector(objQS) : objQS;
+      console.log('obj', obj, obj.getBoundingClientRect());
+
+      if (null == obj || typeof obj !== 'object') {
+        throw 'Invalid Target!';
+      }
+
+      let objBCR = obj.getBoundingClientRect(); // rPos accepts TL, T/TC, TR, ML, M/C/MC, MR, BL, B/BC, BR (case- and order-insensitive)
+
+      if (!/^(?:[tmbrcl]|[tmb][rcl]|[rcl][tmb])$/i.test(rPos)) {
+        throw 'Invalid orientation specified!';
+      } // Accomodate single-character entry of 'm' or 'c', both taken to mean 'mc' ('m'iddle-'c'enter)
+
+
+      if (/^[mc]$/i.test(rPos)) {
+        rPos = 'mc';
+      } // Set default orientation to top-left (tl/lt), meaning we have nothing to do for 't'op or 'l'eft
+
+
+      let osT = objBCR.y + offsetHeight,
+          // Note we add the user-set offsets to our bases
+      osL = objBCR.x + offsetWidth; // so they carry though to the other options.
+
+      if (/m/i.test(rPos)) {
+        osT += objBCR.height / 2;
+      } // Adjust vertically for 'm'iddle (top + height/2)
+
+
+      if (/b/i.test(rPos)) {
+        osT += objBCR.height;
+      } // Adjust vertically for 'b'ottom (top + height)
+
+
+      if (/c/i.test(rPos)) {
+        osL += objBCR.width / 2;
+      } // Adjust horizontally for 'c'enter (left + width/2)
+
+
+      if (/r/i.test(rPos)) {
+        osL += objBCR.width;
+      } // Adjust horizontally for 'r'ight (left + width)
+
+
+      objBCR.offsetTop = osT;
+      objBCR.offsetLeft = osL;
+      this.place(osL, osT);
+      console.log('return', 'objBCR:', objBCR);
+      return objBCR;
+    } catch (e) {
+      console.group('ERROR DETAILS (Error in callout.orient)');
+      console.error('Error details:\n  - ', e);
+      console.error('User specified parameters:\n  - objQS:', objQS, '\n  - rPos:', rPos, '\n  - offsetWidth:', offsetWidth, '\n  - offsetHeight:', offsetHeight);
+      console.groupEnd();
+      return false;
+    }
+  }
+};
+var calloutBubbles = {
+  retObj: null,
+  // VAR: retObj          Storage object for the reticle HTML object
+  retColor: 'red',
+  // VAR: retColor        Default color of the reticle and its text
+  ret: function () {
+    // FN:  ret()           Creates the reticle HTML object (if not present), and
+    this.retObj = document.querySelector(".reticle") || null; //                      returns it (be it newly-created or already-extant)
+
+    if (this.retObj !== null) {
+      //      params:         NONE
+      return this.retObj;
+    } else {
+      let clrVar = `style="--reticle-color:${this.retColor}"`; // TODO: Modify the reticle so it's position is dictated by CSS variables
+
+      document.body.innerHTML += `<span class="reticle" ${clrVar}>(0,0)</span>`;
+      this.retObj = document.querySelector(".reticle");
+    }
+
+    return this.retObj;
+  },
+  place: function (x = 0, y = 0) {
+    // FN: place(x,y)       Drops the reticle at the X/Y coordinates specified. 
+    let rO = this.ret(); //                      Note these are ON-SCREEN coordinates, and don't account for
+
+    rO.style.top = y + 'px'; //                      page scrolling (due to absolutely-positioning the reticle)
+
+    rO.style.left = x + 'px'; //     params:          x - the X-coordinate we want to place the reticle center at 
+
+    rO.innerHTML = `(${x + ',' + y})`; //                      y - the Y-coordinate we want to place the reticle center at 
+
+    this.show();
+  },
+  target: function (objQS) {
+    // FN: target(objQS)    Drops the reticle at TOP LEFT of the FIRST ELEMENT
+    let obj = typeof objQS === 'string' ? document.querySelector(objQS) : objQS; //                      returned that matches the QuerySelector provided
+
+    if (objQS == null) return false; //     params:          objQS - The QuerySelector that will be matched to target the
+
+    obj = obj.getBoundingClientRect(); //                              element we wish to target
+
+    this.place(obj.x, obj.y); //                      Also will accept an htmlElement object.
+
+    this.show();
+  },
+  clickShowFn: function (e) {
+    // FN: clickShowFn(e)   Internal method compartmentalizing the place() function
+    reticle.place(e.pageX, e.pageY); //     params:          e - Window's event object used to determine click X/Y
+  },
+  enableOnClick: function () {
+    // FN: enableOnClick()  Enables the reticle's "place wherever user just clicked" mode
+    this.hide(); //      params:         NONE
+
+    this.color('#070');
+    window.addEventListener('mouseup', this.clickShowFn);
+  },
+  disableOnClick: function () {
+    // FN: disableOnClick() Disables the reticle's "place wherever user just clicked" mode
+    this.hide(); //      params:         NONE
+
+    window.removeEventListener('mouseup', this.clickShowFn);
+    this.color('#F00');
+  },
+  color: function (clr) {
+    // FN: color(clr)       Sets the reticle's and its text's color to the specified string
+    this.retColor = clr; //      params:         clr - Color string to set the reticle and text to (supports hex,
+
+    this.ret().style.setProperty('--reticle-color', clr); //                      rgb, rgba, and color names)
+  },
+  show: function () {
+    this.ret().style.display = 'block';
+  },
+  // FN: show()           Helper function to make the reticle visible
+  hide: function () {
+    this.ret().style.display = 'none';
+  },
+  // FN: hide()           Helper function to hide the reticle
+  placeBubbles: function () {
+    var bbls = d.querySelectorAll(".bubble");
+    bbls.forEach(bbl => {
+      bblTarget = d.querySelector(`[data-bbl="${bbl.id}"]`);
+      if (bblTarget == null) return false;
+      bblDimens = bbl.getBoundingClientRect();
+      bblArrow = bbl.className.replace(/\sbubble\s/, '');
+      bblCoords = bblTarget.dataset['bblPos'] ? bblTarget.dataset['bblPos'] : 'tl';
+      bblOffsets = this.shiftBubble(bbl, bblArrow, bblDimens);
+      console.log('bblOffsets', bblOffsets);
+      bblOffsetX = bblOffsets.offsetLeft;
+      bblOffsetY = bblOffsets.offsetTop;
+      bblOffsetX = bblOffsetX + parseInt(bblTarget.dataset['bblOffsetx']) || bblOffsetX;
+      bblOffsetY = bblOffsetY + parseInt(bblTarget.dataset['bblOffsety']) || bblOffsetY;
+      trgNfo = this.orient(bblTarget, bblCoords, bblOffsetX, bblOffsetY);
+      bbl.style.top = trgNfo.offsetTop + 'px';
+      bbl.style.left = trgNfo.offsetLeft + 'px';
+    });
+  },
+  shiftBubble: function (bbl, bblArrow, bblDimens) {
+    console.log('shiftBubble', 'bbl:', bbl, 'bblArrow:', bblArrow, 'bblDimens:', bblDimens);
+    let shift = {
+      offsetTop: 0,
+      offsetLeft: 0
+    };
+    if (/b/.test(bblArrow)) shift.offsetTop += bblDimens.height * -1;
+    console.log('return', 'shift:', shift);
+    return shift;
+  },
+  orient: function (objQS, rPos = 'tl', offsetWidth = 0, offsetHeight = 0) {
+    try {
+      // objQS accepts a QuerySelector string or an HTMLElement
+      let obj = typeof objQS === 'string' ? document.querySelector(objQS) : objQS;
+
+      if (null == obj || typeof obj !== 'object') {
+        throw 'Invalid Target!';
+      }
+
+      let objBCR = obj.getBoundingClientRect(); // rPos accepts TL, T/TC, TR, ML, M/C/MC, MR, BL, B/BC, BR (case- and order-insensitive)
+
+      if (!/^(?:[tmbrcl]|[tmb][rcl]|[rcl][tmb])$/i.test(rPos)) {
+        throw 'Invalid orientation specified!';
+      } // Accomodate single-character entry of 'm' or 'c', both taken to mean 'mc' ('m'iddle-'c'enter)
+
+
+      if (/^[mc]$/i.test(rPos)) {
+        rPos = 'mc';
+      } // Set default orientation to top-left (tl/lt), meaning we have nothing to do for 't'op or 'l'eft
+
+
+      let osT = objBCR.y + offsetHeight,
+          // Note we add the user-set offsets to our bases
+      osL = objBCR.x + offsetWidth; // so they carry though to the other options.
+
+      if (/m/i.test(rPos)) {
+        osT += objBCR.height / 2;
+      } // Adjust vertically for 'm'iddle (top + height/2)
+
+
+      if (/b/i.test(rPos)) {
+        osT += objBCR.height;
+      } // Adjust vertically for 'b'ottom (top + height)
+
+
+      if (/c/i.test(rPos)) {
+        osL += objBCR.width / 2;
+      } // Adjust horizontally for 'c'enter (left + width/2)
+
+
+      if (/r/i.test(rPos)) {
+        osL += objBCR.width;
+      } // Adjust horizontally for 'r'ight (left + width)
+
+
+      objBCR.offsetTop = osT;
+      objBCR.offsetLeft = osL;
+      return objBCR;
+    } catch (e) {
+      console.group('ERROR DETAILS (Error in calloutBubbles.orient)');
+      console.error('Error details:\n  - ', e);
+      console.error('User specified parameters:\n  - objQS:', objQS, '\n  - rPos:', rPos, '\n  - offsetWidth:', offsetWidth, '\n  - offsetHeight:', offsetHeight);
+      console.groupEnd();
+      return false;
+    }
+  }
+};

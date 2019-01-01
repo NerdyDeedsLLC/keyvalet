@@ -1033,7 +1033,7 @@ body>footer {
 }
 
 #instructionLayer {
-    display:block;
+    display:none;
     position:fixed;
     width: 100vw;
     height: 100vh;
@@ -1064,7 +1064,7 @@ body>footer {
                 position: absolute;
                 width: 0;
                 height: 0;
-                border: 1rem solid transparent;
+                border: 0.5rem solid transparent;
             }
         }
 
@@ -1075,7 +1075,7 @@ body>footer {
                 top: 0;
                 border-bottom-color: $darkblue;
                 border-top: 0;
-                margin-top: -1rem;
+                margin-top: -0.5rem;
             }
         }
 
@@ -1086,7 +1086,7 @@ body>footer {
                 bottom: 0;
                 border-top-color: $darkblue;
                 border-bottom: 0;
-                margin-bottom:-1rem;
+                margin-bottom:-0.5rem;
             }
         }
 
@@ -1095,31 +1095,37 @@ body>footer {
             top: 50%;
             border-left-color: $darkblue;
             border-right: 0;
-            margin-top: -1rem;
-            margin-right: -0.75rem;
+            margin-top: -0.5rem;
+            margin-right: -0.35rem;
         }
 
         &.t::after {
             left: 50%;
-            margin-left:-0.5rem;
+            margin-left:-0.75rem;
         }
 
         &.tl::after {
             left: 50%;
-            margin-left: -4rem;
+            margin-left: -3.5rem;
             border-left: 0;
         }
 
         &.tr::after {
             right: 50%;
             border-right: 0;
-            margin-right: -4rem;
+            margin-right: -3.5rem;
         }
 
         &.bl::after {
-            left: 6rem;
+            left: 50%;
             border-left: 0;
-            margin-left: -4rem;
+            margin-left: -3.5rem;
+        }
+
+        &.br::after {
+            right:50%;
+            border-right: 0;
+            margin-right: -3.5rem;
         }
     }
     nav {
@@ -1172,61 +1178,19 @@ body>footer {
             }
         }
     }
-    #menu-bubbles {
+
+    .bubble-set {
         display:none;
-
+    }
+    #menu-bubbles {
+        display:block;
         .bubble {
-            max-width: 12rem;
-
-            &:nth-child(2) {
-                top:    3rem;
-                left:   5rem;
-            }
-
-            &:nth-child(3) {
-                top:    3rem;
-                right:  33.5rem;
-            }
-
-            &:nth-child(4) {
-                top:    3rem;
-                right:  21rem;
-            }
-
-            &:nth-child(5) {
-                left:   3rem;
-                bottom: 2rem;
-            }
-
-            &:nth-child(6) {
-                bottom: 2rem;
-                right:  2rem;
-            }
-        }
-        .blotter {
-            background-color:rgba($white, 0.66);
-            position:fixed;
-            top: 12rem;
-            left: 0;
-            right: 21.5rem;
-            bottom: 1.5rem;
-
-            &::after {
-                content:'';
-                background-color:rgba($white, 0.66);
-                position:fixed;
-                top: 0;
-                right: 0;
-                left: 84rem;
-                bottom: 1.5rem;
-            }
+            max-width:175px;
         }
     }
 
 
 #binding-bubbles {
-        display:block;
-
         .bubble {
             max-width: 25rem;
 
@@ -1278,5 +1242,56 @@ body>footer {
                 bottom: 1.5rem;
             }
         }
+    }
+
+
+
+    #application-bubbles {
+        .bubble {
+            white-space: nowrap;
+            padding:10px 30px;
+        }
+    }
+}
+
+.reticle {
+    position:absolute;
+    border:2px solid var(--reticle-color);
+    border-bottom:0 none;
+    border-right:0 none;
+    width: 10px;
+    height: 10px;
+    z-index: 1000000;
+    font-size:10px;
+    font-weight:bold;
+    color:var(--reticle-color);
+    line-height:10px;
+    padding:5px;
+    top:10rem;
+    left:10rem;
+
+    &::before {
+        content:'';
+        position:absolute;
+        border:2px solid var(--reticle-color);
+        font-size:0;
+        line-height: 0;
+        border-top:0 none;
+        border-left:0 none;
+        width: 10px;
+        height: 10px;
+        z-index: 1000000;
+        transform: translate(calc(-150% + 1px), calc(-150% + 1px));
+    }
+
+    &::after {
+        content:'';
+        position:absolute;
+        border:1px solid var(--reticle-color);
+        border-radius: 50%;
+        width: 10px;
+        height: 10px;
+        z-index: 1000000;
+        transform: translate(-100%, calc(-10px + -100%));
     }
 }
