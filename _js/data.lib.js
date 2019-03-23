@@ -188,9 +188,10 @@ systemDefaults.RD.opts = "<option value=''>Nothing (disabled)</option><option>" 
  * @return {string}             HTML code for a single binding in the UI (an individual <table>)
  */
 const generateSingleBinding = (keyID, keyLabel, keyName, dirSet, record, instanceCt) => {
-    let kCode              = record.keyCode,
+  console.log('generateSingleBinding', 'keyID:', keyID, 'keyLabel:', keyLabel, 'keyName:', keyName, 'dirSet:', dirSet, 'record:', record, 'instanceCt:', instanceCt)
+    let kCode              = record.keyCode || keyID,
         humanFriendlyKCode = "<b data-btn-text='" + (kCode.replace(keyID, keyLabel).replace("$", "⇧").replace("@", "⌘").replace("~", "⌥").split("").join("'></b><b data-btn-text='")) + "'></b>",
-        osxCmd             = record.osxCmd,
+        osxCmd             = record.osxCmd || '',
         rulesObj           = document.getElementById("rules-for-" + keyID),
         behaviorOpts       = ('LU'.indexOf(dirSet) === -1) ? systemDefaults.RD.opts : systemDefaults.LU.opts;
         behaviorOpts       = behaviorOpts.replace(`>${osxCmd}</`,` selected>${osxCmd}</`);
@@ -226,7 +227,7 @@ const generateSingleBinding = (keyID, keyLabel, keyName, dirSet, record, instanc
     if(null == rulesObj) {
       return HTMLOutput;
     } else {
-      rulesObj.innerHTML = HTMLOutput + rulesObj.innerHTML;
+        rulesObj.innerHTML = rulesObj.innerHTML.replace(`<button id="append-button-${keyID}"`, `${HTMLOutput}<button id="append-button-${keyID}"`);
     }
 };
 
@@ -251,15 +252,24 @@ const generateSingleBinding = (keyID, keyLabel, keyName, dirSet, record, instanc
 const generateAllBindingsForKey = (keyID, keyLabel, keyName, bindingSet, dirSet, bindingCount=bindingSet.length) => {
     instanceCt = 1;
     let HTMLOutput = `<section id="ruleset-key-${keyID}">
-                        <input type="checkbox" id="enable-keyset-${keyID}" name="enable-keyset-${keyID}" class="enable-rule" value="1" checked onchange="processRules()"><label for="enable-keyset-${keyID}"><span data-keycap="${keyLabel}" class="header"></span> ${keyName}</label></td>
-                        <span class="rule-count" id="${keyID}-activeCount">${bindingCount}</span>
-                        <div id="rules-for-${keyID}" class="interactive-form">`;
-                        bindingSet.forEach(o=> { HTMLOutput += generateSingleBinding(keyID, keyLabel, keyName, dirSet, o, instanceCt); instanceCt++; });
-    return HTMLOutput;
-        //+ `<button id="append-button-${keyID}" class='append' alt="Add Another">⊕</button>
-        //                  </div>
-        //              </section>`;
+                            <input type="checkbox" id="enable-keyset-${keyID}" name="enable-keyset-${keyID}" class="enable-rule" value="1" checked onchange="processRules()"><label for="enable-keyset-${keyID}"><span data-keycap="${keyLabel}" class="header"></span> ${keyName}</label></td>
+                            <span class="rule-count" id="${keyID}-activeCount">${bindingCount}</span>
+                            <div id="rules-for-${keyID}" class="interactive-form">`;
+                            bindingSet.forEach(o=> { HTMLOutput += generateSingleBinding(keyID, keyLabel, keyName, dirSet, o, instanceCt); instanceCt++; });
+    return HTMLOutput + `   <button id="append-button-${keyID}" class='append' alt="Add Another" onmouseup='appendBinding("${keyID}", "${keyLabel}", "${keyName}", "${dirSet}", "${instanceCt}")'>⊕</button>
+                         </div>
+                      </section>`;
+                      
 };
+
+const appendBinding = (keyID, keyLabel, keyName, dirSet, record, instanceCt) => {
+  console.log('appendBinding', 'keyID:', keyID, 'keyLabel:', keyLabel, 'keyName:', keyName, 'dirSet:', dirSet, 'record:', record, 'instanceCt:', instanceCt)
+    let extantKeyCt = 0,
+        siblingKeys = [...d.querySelectorAll(`[data-key='${keyID}']`)];
+    siblingKeys.forEach(sk => {ski = sk.dataset.instance; if(ski > extantKeyCt) {extantKeyCt=ski;}});
+
+    generateSingleBinding(keyID, keyLabel, keyName, dirSet, record, extantKeyCt++);
+}
 
 /**
  * @name                        processRules
@@ -435,7 +445,7 @@ echo "Gather your sudo access right up front (and therefore only once):"
 sudo echo "Thank you!"
 sudo touch ~/Library/KeyBindings/DefaultKeyBinding.dict
 
-sudo cat <<EOF > ~/Library/KeyBindings/DefaultKeyBinding.dict
+sudo cat <<EOF >> ~/Library/KeyBindings/DefaultKeyBinding.dict
 {
   ${opcTxt}
 }
