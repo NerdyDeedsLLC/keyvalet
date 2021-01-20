@@ -22,7 +22,7 @@
     "browser-sync": "^2.26.3",
     "bulma": "^0.7.2",
     "dialog-polyfill": "^0.4.10",
-    "gsap": "^2.0.2",
+    "gsap": "^3.6.0",
     "gulp": "^4.0.0",
     "gulp-autoprefixer": "^6.0.0",
     "gulp-babel": "^8.0.0",
