@@ -87,7 +87,6 @@ main {
         #key {
         	border-radius: 0 0 1rem 1rem;
           width: 90%;
-          background-color:$white;
           margin: 0 auto;
           border: 1px solid $gray;
           font-family: monospace;
@@ -382,11 +381,12 @@ table {
                 font-weight: 900;
 
                 &::after {
-                width: 1rem;
-                height: 1rem;
+                    width: 1rem;
+                    height: 1rem;
+                    box-shadow:inset -1rem 0 0 0 #EEE;
                     border-color: #666;
                     color: #333;
-                    background-color: #EEE;
+                    // background-color: #EEE;
                 }
             }
         }
@@ -1295,3 +1295,18 @@ body>footer {
         transform: translate(-100%, calc(-10px + -100%));
     }
 }
+
+table th {
+    padding: 0.5rem 0 0.5rem 0.5rem;
+    
+    b {
+        background-color: transparent;
+        &:last-of-type {
+            box-shadow: inset -22px 0 0 0 white;
+        }
+    }
+}
+
+
+
+
