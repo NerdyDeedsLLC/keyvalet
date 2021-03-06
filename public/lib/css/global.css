@@ -90,7 +90,6 @@ main > aside li > #output-code,
 main > aside #key {
   border-radius: 0 0 1rem 1rem;
   width: 90%;
-  background-color: #FFF;
   margin: 0 auto;
   border: 1px solid #888;
   font-family: monospace;
@@ -355,9 +354,10 @@ table th b[data-btn-text='⇧'], table th b[data-btn-text='⌘'], table th b[dat
 table th b[data-btn-text='⇧']::after, table th b[data-btn-text='⌘']::after, table th b[data-btn-text='⌥']::after, table th b[data-btn-text='⌃']::after, table th b[data-btn-text='SHIFT']::after, table th b[data-btn-text='CMD']::after, table th b[data-btn-text='OPT']::after, table th b[data-btn-text='CTRL']::after {
   width: 1rem;
   height: 1rem;
+  -webkit-box-shadow: inset -1rem 0 0 0 #EEE;
+          box-shadow: inset -1rem 0 0 0 #EEE;
   border-color: #666;
   color: #333;
-  background-color: #EEE;
 }
 
 table th span {
@@ -1215,4 +1215,17 @@ body > footer a:last-child {
   z-index: 1000000;
   -webkit-transform: translate(-100%, calc(-10px + -100%));
           transform: translate(-100%, calc(-10px + -100%));
+}
+
+table th {
+  padding: 0.5rem 0 0.5rem 0.5rem;
+}
+
+table th b {
+  background-color: transparent;
+}
+
+table th b:last-of-type {
+  -webkit-box-shadow: inset -22px 0 0 0 white;
+          box-shadow: inset -22px 0 0 0 white;
 }

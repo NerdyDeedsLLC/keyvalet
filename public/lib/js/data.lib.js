@@ -346,23 +346,14 @@ const generateAllBindingsForKey = (keyID, keyLabel, keyName, bindingSet, dirSet,
     HTMLOutput += generateSingleBinding(keyID, keyLabel, keyName, dirSet, o, instanceCt);
     instanceCt++;
   });
-  return HTMLOutput + `   <button id="append-button-${keyID}" class='append' alt="Add Another" onmouseup='appendBinding("${keyID}", "${keyLabel}", "${keyName}", "${dirSet}", "${instanceCt}")'>⊕</button>
+  return HTMLOutput + `   <button id="append-button-${keyID}" class='append' alt="Add Another" onmouseup='appendBinding("${keyID}", "${keyLabel}", "${keyName}", "${dirSet}", "${instanceCt++}")'>⊕</button>
                          </div>
                       </section>`;
 };
 
 const appendBinding = (keyID, keyLabel, keyName, dirSet, record, instanceCt) => {
-  console.log('appendBinding', 'keyID:', keyID, 'keyLabel:', keyLabel, 'keyName:', keyName, 'dirSet:', dirSet, 'record:', record, 'instanceCt:', instanceCt);
-  let extantKeyCt = 0,
-      siblingKeys = [...d.querySelectorAll(`[data-key='${keyID}']`)];
-  siblingKeys.forEach(sk => {
-    ski = sk.dataset.instance;
-
-    if (ski > extantKeyCt) {
-      extantKeyCt = ski;
-    }
-  });
-  generateSingleBinding(keyID, keyLabel, keyName, dirSet, record, extantKeyCt++);
+  let extantKeyCt = d.querySelectorAll(`[data-key='${keyID}']`) + 1;
+  generateSingleBinding(keyID, keyLabel, keyName, dirSet, record, extantKeyCt);
 };
 /**
  * @name                        processRules
