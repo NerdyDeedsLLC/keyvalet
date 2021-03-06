@@ -16,14 +16,12 @@ var PATHS = {                                                   // Paths to dist
     }
 };
 
-var gulp, sass, babel, autoprefixer, shell, postcss, rucksack, bigBrother, runCLICmd;
+var gulp, sass, babel, shell, postcss, rucksack, bigBrother;
 
 gulp         = require('gulp');
 
 sass         = require('gulp-sass');                            // Provides CSS PRE-processing (via a light-weight wrapper around node-sass, itself a Node binding for libsass/Sass)
 babel        = require('gulp-babel');                           // Automatically converts ES6 code into CommonJS
-autoprefixer = require('gulp-autoprefixer');                    // Applies prefixes for common and popular platforns and browsers (-ms-, -webkit-)
-runCLICmd    = require('gulp-run-command').default;             // Allows for the execution of Bash shell commands directly from gulp.
 shell        = require('gulp-shell');                           // Provides CSS POST-processing
 postcss      = require('gulp-postcss');                         // Provides CSS POST-processing
 rucksack     = require('rucksack-css');                         // CSS Post-processor rules (responsiveness, hex conversions, certain polyfills)
@@ -59,9 +57,6 @@ function build_css(){
             outputStyle: 'expanded',
             errLogToConsole: true
         };
-    var autoprefixerSettings = {
-            browsers: 'last 2 versions'
-        };
     var rucksackSettings = {
             responsiveType:    true,    // Def: true
             shorthandPosition: true,    // Def: true
@@ -80,7 +75,6 @@ function build_css(){
     return gulp.src(PATHS.css.source)
     .pipe(sass(sassSettings).on('error', sass.logError))
     .pipe(postcss([ rucksack(rucksackSettings) ]))
-    .pipe(autoprefixer(autoprefixerSettings))
     .pipe(bigBrother.stream())
     .pipe(gulp.dest(PATHS.css.dest))
     .on('change', bigBrother.reload);
