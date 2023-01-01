@@ -17,16 +17,16 @@
   "author": "Nerdy Deeds, LLC",
   "license": "ISC",
   "dependencies": {
+    "@babel/core": "^7.20.7",
+    "browser-sync": "^2.27.11",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
-    "gulp-postcss": "^9.0.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.13.8",
-    "browser-sync": "^2.26.14",
-    "gulp-sass": "^4.1.0",
+    "gulp-postcss": "^9.0.1",
+    "gulp-sass": "^5.1.0",
     "gulp-shell": "^0.8.0",
-    "postcss": "^8.2.7",
-    "rucksack-css": "^1.0.2"
+    "node-sass": "^8.0.0",
+    "postcss": "^8.4.20",
+    "rucksack-css": "^1.0.2",
+    "sass": "^1.57.1"
   }
 }

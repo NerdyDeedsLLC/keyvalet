@@ -24,6 +24,12 @@ const parentSelector = function (elem, selector, closestReturn=true) {
     else                            { return (closestReturn) ? matchedElements[0] : matchedElements; }
 };
 
+window.showHideDefaultBindings = (obj) => {
+    console.log('showHideDefaultBindings');
+    d.body.classList.toggle('hideBindings');
+    obj.innerText = d.body.classList.contains('hideBindings') ? "Show Default Bindings" : "Hide Default Bindings";
+}
+
 const parentSelectorAll = function (elem, selector) {
     return parentSelector(elem, selector, false);
 };
@@ -40,12 +46,12 @@ const parentSelectorAll = function (elem, selector) {
  */
 const availableMethods = {
     'LU': {
-        'L': ['moveLeft', 'moveLeftAndModifySelection', 'moveWordLeft', 'moveWordLeftAndModifySelection', 'moveToBeginningOfLine', 'moveToBeginningOfLineAndModifySelection'],
-        'U': ['moveUp', 'moveUpAndModifySelection', 'pageUp', 'pageUpAndModifySelection', 'moveToBeginningOfParagraph', 'moveToBeginningOfParagraphAndModifySelection', 'moveToBeginningOfDocument', 'moveToBeginningOfDocumentAndModifySelection']
+        'L': ['"moveLeft:"', '"moveLeftAndModifySelection:"', '"moveWordLeft:"', '"moveWordLeftAndModifySelection:"', '"moveToBeginningOfLine:"', '"moveToBeginningOfLineAndModifySelection:"'],
+        'U': ['"moveUp:"', '"moveUpAndModifySelection:"', '"pageUp:"', '"pageUpAndModifySelection:"', '"moveToBeginningOfParagraph:"', '"moveToBeginningOfParagraphAndModifySelection:"', '"moveToBeginningOfDocument:"', '"moveToBeginningOfDocumentAndModifySelection:"']
     },
     'RD': {
-        'R': ['moveRight', 'moveRightAndModifySelection', 'moveWordRight', 'moveWordRightAndModifySelection', 'moveToEndOfLine', 'moveToEndOfLineAndModifySelection'],
-        'D': ['moveDown', 'moveDownAndModifySelection', 'pageDown', 'pageDownAndModifySelection', 'moveToEndOfParagraph', 'moveToEndOfParagraphAndModifySelection', 'moveToEndOfDocument', 'moveToEndOfDocumentAndModifySelection']
+        'R': ['"moveRight:"', '"moveRightAndModifySelection:"', '"moveWordRight:"', '"moveWordRightAndModifySelection:"', '"moveToEndOfLine:"', '"moveToEndOfLineAndModifySelection:"'],
+        'D': ['"moveDown:"', '"moveDownAndModifySelection:"', '"pageDown:"', '"pageDownAndModifySelection:"', '"moveToEndOfParagraph:"', '"moveToEndOfParagraphAndModifySelection:"', '"moveToEndOfDocument:"', '"moveToEndOfDocumentAndModifySelection:"']
     }
 };
 
@@ -54,7 +60,7 @@ const availableMethods = {
  * @type                        {Object}
  * 
  * @description                 This is really the guts of the data store. Listed below are all the NATIVE key combinations 
- *                              indemic to OSX. It could just as easily by a DB. This allows us to do several important things:
+ *                              endemic to OSX. It could just as easily be a DB. This allows us to do several important things:
  *                              1. Restore Defaults.
  *                              2. Ascertain currently "taken" key combinations (useful if use specifies a combo already in use)
  *                              3. Ascertain if a given listing is still resting in "default mode"
@@ -70,12 +76,12 @@ const systemDefaults = {
                 'keySymbol': '←',
                 'keyCode':'UF702',
                 'data': [
-                    { 'keyCode': '\UF702', 'hfDesc': 'LEFTARROW', 'osxCmd': 'moveLeft' },
-                    { 'keyCode': '$\UF702', 'hfDesc': 'SHIFT + LEFTARROW', 'osxCmd': 'moveLeftAndModifySelection' },
-                    { 'keyCode': '@\UF702', 'hfDesc': 'CMD + LEFTARROW', 'osxCmd': 'moveToBeginningOfLine' },
-                    { 'keyCode': '~\UF702', 'hfDesc': 'ALT + LEFTARROW', 'osxCmd': 'moveWordLeft' },
-                    { 'keyCode': '$@\UF702', 'hfDesc': 'SHIFT + CMD + LEFTARROW', 'osxCmd': 'moveToBeginningOfLineAndModifySelection' },
-                    { 'keyCode': '$~\UF702', 'hfDesc': 'SHIFT + ALT + LEFTARROW', 'osxCmd': 'moveWordLeftAndModifySelection' }
+                    { 'keyCode': '\UF702', 'hfDesc': 'LEFTARROW', 'osxCmd': '"moveLeft:"' },
+                    { 'keyCode': '$\UF702', 'hfDesc': 'SHIFT + LEFTARROW', 'osxCmd': '"moveLeftAndModifySelection:"' },
+                    { 'keyCode': '@\UF702', 'hfDesc': 'CMD + LEFTARROW', 'osxCmd': '"moveToBeginningOfLine:"' },
+                    { 'keyCode': '~\UF702', 'hfDesc': 'ALT + LEFTARROW', 'osxCmd': '"moveWordLeft:"' },
+                    { 'keyCode': '$@\UF702', 'hfDesc': 'SHIFT + CMD + LEFTARROW', 'osxCmd': '"moveToBeginningOfLineAndModifySelection:"' },
+                    { 'keyCode': '$~\UF702', 'hfDesc': 'SHIFT + ALT + LEFTARROW', 'osxCmd': '"moveWordLeftAndModifySelection:"' }
                 ]
             }
         },
@@ -84,26 +90,26 @@ const systemDefaults = {
                 'keySymbol': '↑',
                 'keyCode':'UF700',
                 'data': [
-                    { 'keyCode': '\UF700', 'hfDesc': 'UPARROW', 'osxCmd': 'moveUp' },
-                    { 'keyCode': '$\UF700', 'hfDesc': 'SHIFT + UPARROW', 'osxCmd': 'moveUpAndModifySelection' },
-                    { 'keyCode': '~\UF700', 'hfDesc': 'ALT + UPARROW', 'osxCmd': 'moveToBeginningOfParagraph' },
-                    { 'keyCode': '$~\UF700', 'hfDesc': 'SHIFT + ALT + UPARROW', 'osxCmd': 'moveToBeginningOfParagraphAndModifySelection' }
+                    { 'keyCode': '\UF700', 'hfDesc': 'UPARROW', 'osxCmd': '"moveUp:"' },
+                    { 'keyCode': '$\UF700', 'hfDesc': 'SHIFT + UPARROW', 'osxCmd': '"moveUpAndModifySelection:"' },
+                    { 'keyCode': '~\UF700', 'hfDesc': 'ALT + UPARROW', 'osxCmd': '"moveToBeginningOfParagraph:"' },
+                    { 'keyCode': '$~\UF700', 'hfDesc': 'SHIFT + ALT + UPARROW', 'osxCmd': '"moveToBeginningOfParagraphAndModifySelection:"' }
                 ]
             },
             'PAGE_UP': {
                 'keySymbol': '⇞',
                 'keyCode':'UF72C',
                 'data': [
-                    { 'keyCode': '\UF72C', 'hfDesc': 'PGUP', 'osxCmd': 'pageUp' },
-                    { 'keyCode': '$\UF72C', 'hfDesc': 'SHIFT + PGUP', 'osxCmd': 'pageUpAndModifySelection' },
+                    { 'keyCode': '\UF72C', 'hfDesc': 'PGUP', 'osxCmd': '"pageUp:"' },
+                    { 'keyCode': '$\UF72C', 'hfDesc': 'SHIFT + PGUP', 'osxCmd': '"pageUpAndModifySelection:"' },
                 ]
             },
             'HOME': {
                 'keySymbol': '⇱',
                 'keyCode':'UF729',
                 'data': [
-                    { 'keyCode': '\UF729', 'hfDesc': 'HOME', 'osxCmd': 'moveToBeginningOfDocument' },
-                    { 'keyCode': '$\UF729', 'hfDesc': 'SHIFT + HOME', 'osxCmd': 'moveToBeginningOfDocumentAndModifySelection' },
+                    { 'keyCode': '\UF729', 'hfDesc': 'HOME', 'osxCmd': '"moveToBeginningOfDocument:"' },
+                    { 'keyCode': '$\UF729', 'hfDesc': 'SHIFT + HOME', 'osxCmd': '"moveToBeginningOfDocumentAndModifySelection:"' },
                 ]
             }
         }
@@ -115,12 +121,12 @@ const systemDefaults = {
                 'keySymbol': '→',
                 'keyCode':'UF703',
                 'data': [
-                    { 'keyCode': '\UF703', 'hfDesc': 'RIGHTARROW', 'osxCmd': 'moveRight' },
-                    { 'keyCode': '$\UF703', 'hfDesc': 'SHIFT + RIGHTARROW', 'osxCmd': 'moveRightAndModifySelection' },
-                    { 'keyCode': '@\UF703', 'hfDesc': 'CMD + RIGHTARROW', 'osxCmd': 'moveToEndOfLine' },
-                    { 'keyCode': '~\UF703', 'hfDesc': 'ALT + RIGHTARROW', 'osxCmd': 'moveWordRight' },
-                    { 'keyCode': '$@\UF703', 'hfDesc': 'SHIFT + CMD + RIGHTARROW ', 'osxCmd': 'moveToEndOfLineAndModifySelection' },
-                    { 'keyCode': '$~\UF703', 'hfDesc': 'SHIFT + ALT + RIGHTARROW ', 'osxCmd': 'moveWordRightAndModifySelection' },
+                    { 'keyCode': '\UF703', 'hfDesc': 'RIGHTARROW', 'osxCmd': '"moveRight:"' },
+                    { 'keyCode': '$\UF703', 'hfDesc': 'SHIFT + RIGHTARROW', 'osxCmd': '"moveRightAndModifySelection:"' },
+                    { 'keyCode': '@\UF703', 'hfDesc': 'CMD + RIGHTARROW', 'osxCmd': '"moveToEndOfLine:"' },
+                    { 'keyCode': '~\UF703', 'hfDesc': 'ALT + RIGHTARROW', 'osxCmd': '"moveWordRight:"' },
+                    { 'keyCode': '$@\UF703', 'hfDesc': 'SHIFT + CMD + RIGHTARROW ', 'osxCmd': '"moveToEndOfLineAndModifySelection:"' },
+                    { 'keyCode': '$~\UF703', 'hfDesc': 'SHIFT + ALT + RIGHTARROW ', 'osxCmd': '"moveWordRightAndModifySelection:"' },
                 ]
             }
         },
@@ -130,26 +136,26 @@ const systemDefaults = {
                 'keySymbol': '↓',
                 'keyCode':'UF701',
                 'data': [
-                    { 'keyCode': '\UF701', 'hfDesc': 'DOWNARROW', 'osxCmd': 'moveDown' },
-                    { 'keyCode': '$\UF701', 'hfDesc': 'SHIFT + DOWNARROW', 'osxCmd': 'moveDownAndModifySelection' },
-                    { 'keyCode': '~\UF701', 'hfDesc': 'ALT + DOWNARROW', 'osxCmd': 'moveToEndOfParagraph' },
-                    { 'keyCode': '$~\UF701', 'hfDesc': 'SHIFT + ALT + DOWNARROW', 'osxCmd': 'moveToEndOfParagraphAndModifySelection' },
+                    { 'keyCode': '\UF701', 'hfDesc': 'DOWNARROW', 'osxCmd': '"moveDown:"' },
+                    { 'keyCode': '$\UF701', 'hfDesc': 'SHIFT + DOWNARROW', 'osxCmd': '"moveDownAndModifySelection:"' },
+                    { 'keyCode': '~\UF701', 'hfDesc': 'ALT + DOWNARROW', 'osxCmd': '"moveToEndOfParagraph:"' },
+                    { 'keyCode': '$~\UF701', 'hfDesc': 'SHIFT + ALT + DOWNARROW', 'osxCmd': '"moveToEndOfParagraphAndModifySelection:"' },
                 ]
             },
             'PAGE_DOWN': {
                 'keySymbol': '⇟',
                 'keyCode':'UF72D',
                 'data': [
-                    { 'keyCode': '\UF72D', 'hfDesc': 'PGDOWN', 'osxCmd': 'pageDown' },
-                    { 'keyCode': '$\UF72D', 'hfDesc': 'SHIFT + PGDOWN', 'osxCmd': 'pageDownAndModifySelection' },
+                    { 'keyCode': '\UF72D', 'hfDesc': 'PGDOWN', 'osxCmd': '"pageDown:"' },
+                    { 'keyCode': '$\UF72D', 'hfDesc': 'SHIFT + PGDOWN', 'osxCmd': '"pageDownAndModifySelection:"' },
                 ]
             },
             'END': {
                 'keySymbol': '⇲',
                 'keyCode':'UF72B',
                 'data': [
-                    { 'keyCode': '\UF72B', 'hfDesc': 'END', 'osxCmd': 'moveToEndOfDocument' },
-                    { 'keyCode': '$\UF72B', 'hfDesc': 'SHIFT + END', 'osxCmd': 'moveToEndOfDocumentAndModifySelection' },
+                    { 'keyCode': '\UF72B', 'hfDesc': 'END', 'osxCmd': '"moveToEndOfDocument:"' },
+                    { 'keyCode': '$\UF72B', 'hfDesc': 'SHIFT + END', 'osxCmd': '"moveToEndOfDocumentAndModifySelection:"' },
                 ]
             }
         }
@@ -161,9 +167,12 @@ systemDefaults.keyRefs = [systemDefaults.LU.L, systemDefaults.LU.U, systemDefaul
 
 // Further cheatsy references (basically constructing all that data into <select> box <option> sets)
 systemDefaults.LU.opts = [...availableMethods.LU.L, ...availableMethods.LU.U];
-systemDefaults.LU.opts = "<option value=''>Nothing (disabled)</option><option>" + systemDefaults.LU.opts.join("</option><option>") + "</option>";
+systemDefaults.LU.opts = `<option value='""'>Nothing (disabled)</option>\n<option value='${systemDefaults.LU.opts.join(`'></option>\n<option value='`)}'></option>\n`;
+systemDefaults.LU.opts = systemDefaults.LU.opts.replace(/=(.*?)\>/gi, (str, m1)=>'=' + m1 + '\>' + m1.replace(/[^\w]/g, '') )
+console.log('systemDefaults.LU.opts :', systemDefaults.LU.opts);
 systemDefaults.RD.opts = [...availableMethods.RD.R, ...availableMethods.RD.D];
-systemDefaults.RD.opts = "<option value=''>Nothing (disabled)</option><option>" + systemDefaults.RD.opts.join("</option><option>") + "</option>";
+systemDefaults.RD.opts = `<option value='""'>Nothing (disabled)</option>\n<option value='${systemDefaults.RD.opts.join(`'></option>\n<option value='`)}'></option>\n`;
+systemDefaults.RD.opts = systemDefaults.RD.opts.replace(/=(.*?)\>/gi, (str, m1)=>'=' + m1 + '\>' + m1.replace(/[^\w]/g, '') )
 
 /**
  * @name                        generateSingleBinding
@@ -194,7 +203,7 @@ const generateSingleBinding = (keyID, keyLabel, keyName, dirSet, record, instanc
         osxCmd             = record.osxCmd || '',
         rulesObj           = document.getElementById("rules-for-" + keyID),
         behaviorOpts       = ('LU'.indexOf(dirSet) === -1) ? systemDefaults.RD.opts : systemDefaults.LU.opts;
-        behaviorOpts       = behaviorOpts.replace(`>${osxCmd}</`,` selected>${osxCmd}</`);
+        behaviorOpts       = behaviorOpts.replace(`>${osxCmd.replace(/[^\w]/g,'')}</`,` selected>${osxCmd.replace(/[^\w]/g,'')}</`);
     let HTMLOutput = `<table class="rule-scope" data-key="${keyID}" data-instance="${instanceCt}" cellpadding="0" cellspacing="0">
                         <thead>
                             <tr>
@@ -311,7 +320,7 @@ const appendBinding = (keyID, keyLabel, keyName, dirSet, record, instanceCt) => 
 const updateInlineCodeBlocks = () => {
     const dictOP = document.getElementById('output-code');
     dictOP.innerHTML = '';
-    removedBehaviors.forEach(b => dictOP.innerHTML += `<s>${b}</s><br>`);
+    removedBehaviors.forEach(b => dictOP.innerHTML += `<s>${b}</s>\n`);
 
     document.querySelectorAll(':checked ~ .interactive-form .rule-scope').forEach(rso => {
         let rsDS = rso.dataset;
@@ -319,15 +328,15 @@ const updateInlineCodeBlocks = () => {
         // If this is true, either this is the initial seed value, it remains unchanged by the user, or the user has switched it BACK to the
         // initial value. In ANY of these cases, it should appear as greyed text, and not be included in the generated install script.
         if(rsDS.updatedKeychord == null || (rsDS.defaultKeychord === rsDS.updatedKeychord && rsDS.defaultBehavior === rsDS.updatedBehavior)){
-            rsRule = `"${rsDS.defaultKeychord}" = ${rsDS.defaultBehavior}:;`;
+            rsRule = `<i>"${rsDS.defaultKeychord}" = ${rsDS.defaultBehavior};</i>`;
         } else {
             // Rules within this block HAVE been altered from their defaults/just been created. If there IS NO default value...
             // ...we may assume this is an entirely new binding the user <i>ntroduced. Otherwise, it's <b>orrowing an exisiting binding.
             let colorTag = (rsDS.defaultKeychord == null) ? 'i' : 'b';
-            rsRule = `<${colorTag}>"${rsDS.updatedKeychord}" = ${rsDS.updatedBehavior}:;</${colorTag}>`;
+            rsRule = `<${colorTag}>"${rsDS.updatedKeychord}" = ${rsDS.updatedBehavior};</${colorTag}>`;
         }
 
-        dictOP.innerHTML += combo2Machine(rsRule) + "<br>";
+        dictOP.innerHTML += combo2Machine(rsRule) + "\n";
     });
 }
 
@@ -336,9 +345,10 @@ const processRules = () => {
     extantRuleSets.forEach(rs => {
         let rsModKeyId = rs.dataset.key,
             rsModKeys  = [...rs.querySelectorAll(':checked')].map(rsmk => rsmk.id.slice(-3)).join('+'),
-            rsModRule  = rs.querySelector('select').value,
+            rsModSlct  = rs.querySelector('select'),
+            rsModRule  = rsModSlct.options[rsModSlct.selectedIndex].value,
             rsCodeOP   = rs.querySelector('.codeblock');
-        let resultingRule = `"${rsModKeys + rsModKeyId}" = ${rsModRule}:;`;
+        let resultingRule = `"${rsModKeys + rsModKeyId}" = ${rsModRule};`;
         rsCodeOP.innerHTML = combo2Machine(resultingRule);
         // The only time we set the defaults is on our initial sweep. The isDirty check prevents this from happening
         // since it's set by ANYTHING changing after load (otherwise, adding a new binding would trigger this effect)
@@ -492,7 +502,7 @@ const resolveDialog = (e, detail=e.detail, dialog=detail.dialogID, value=detail.
             let bindingToRemove=d.querySelector(`[data-key='${data.keyID}'][data-instance='${data.instanceCt}']`),
                 rsDS     = bindingToRemove.dataset,
                 modState = (rsDS.updatedKeychord) ? 'updated' : 'default',
-                remRule  = combo2Machine(`"${rsDS[modState + 'Keychord']}" = ${rsDS[modState + 'Behavior']}:;`);
+                remRule  = combo2Machine(`"${rsDS[modState + 'Keychord']}" = ${rsDS[modState + 'Behavior']};`);
             if(removedBehaviors.indexOf(remRule) === -1) removedBehaviors.push(remRule);
 
             bindingToRemove.className += ' programmatically-destroyed';

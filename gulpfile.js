@@ -20,7 +20,7 @@ var gulp, sass, babel, shell, postcss, rucksack, bigBrother;
 
 gulp         = require('gulp');
 
-sass         = require('gulp-sass');                            // Provides CSS PRE-processing (via a light-weight wrapper around node-sass, itself a Node binding for libsass/Sass)
+sass         = require('gulp-sass')(require('sass'));                            // Provides CSS PRE-processing (via a light-weight wrapper around node-sass, itself a Node binding for libsass/Sass)
 babel        = require('gulp-babel');                           // Automatically converts ES6 code into CommonJS
 shell        = require('gulp-shell');                           // Provides CSS POST-processing
 postcss      = require('gulp-postcss');                         // Provides CSS POST-processing
