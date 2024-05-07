@@ -1,3 +1,4 @@
+mkdir -p ~/Library/KeyBindings/
 touch ~/Library/KeyBindings/DefaultKeyBinding.dict
 
 echo << EOF >> ~/Library/KeyBindings/DefaultKeyBinding.dict
